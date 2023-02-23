@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.fragmenttest.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.fragmenttest.LoginFragment"
+        android:label="LoginFragment" >
+        <argument
+            android:name="appTitle"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment" />
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.example.fragmenttest.SignupFragment"
+        android:label="SignupFragment" />
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.example.fragmenttest.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_feedFragment_to_userSectionFragment"
+            app:destination="@id/userSectionFragment" />
+    </fragment><action android:id="@+id/action_global_feedFragment" app:destination="@id/feedFragment"/>
+    <fragment
+        android:id="@+id/userSectionFragment"
+        android:name="com.example.fragmenttest.UserSectionFragment"
+        android:label="fragment_user_section"
+        tools:layout="@layout/fragment_user_section" /><action android:id="@+id/action_global_userSectionFragment" app:destination="@id/userSectionFragment"/>
+</navigation>
