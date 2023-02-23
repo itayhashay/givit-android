@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +47,8 @@ public class FeedFragment extends Fragment {
             public void onItemClick(int position) {
                 Item clickedItem = itemList.get(position);
                 Log.d("TAG", clickedItem.name + " clicked");
+                FeedFragmentDirections.ActionFeedFragmentToItemDetailsFragment action = FeedFragmentDirections.actionFeedFragmentToItemDetailsFragment(clickedItem);
+                Navigation.findNavController(view).navigate(action);
             }
         });
 
