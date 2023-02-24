@@ -20,7 +20,7 @@ public class Model {
     }
 
     private User createUser() {
-        return new User("1", "dauss", "0543453552");
+        return new User("1", "dauss", "0543453552", "Itay", "Dauss","dauss@gmail.com");
     }
 
     List<Item> itemsList = new LinkedList<>();

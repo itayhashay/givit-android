@@ -9,17 +9,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/main_user_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="#3C3C3C"
-        android:text="User Section"
-        app:layout_constraintBottom_toTopOf="@+id/main_login_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/loginfrag_title_tv"
         android:layout_width="0dp"

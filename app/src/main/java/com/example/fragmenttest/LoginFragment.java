@@ -4,25 +4,25 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavAction;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends Fragment {
     String title;
+//    EditText usernamePt;
+//    EditText passwordPt;
+    Button submitBtn;
+    Button signupBtn;
+    String  password;
+    String username;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -36,12 +36,6 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -49,9 +43,20 @@ public class LoginFragment extends Fragment {
 
         title = LoginFragmentArgs.fromBundle(getArguments()).getAppTitle();
 
-        Button backBtn = view.findViewById(R.id.back_main_btn);
-        backBtn.setOnClickListener((view1) -> {
-            Navigation.findNavController(view1).popBackStack();
+        submitBtn = view.findViewById(R.id.login_submit_btn);
+        signupBtn = view.findViewById(R.id.login_signup_btn);
+        submitBtn.setOnClickListener((view1) -> {
+            username = ((EditText)(view.findViewById(R.id.login_username_pt))).getText().toString();
+            password = ((EditText)(view.findViewById(R.id.login_password_pt))).getText().toString();
+            if(username.equals("") || username.equals("User Name") || password.equals("") || password.equals("Password")) {
+                Toast.makeText(view.getContext(), "Please Don't Leave Empty Spaces", Toast.LENGTH_SHORT).show();
+            }else {
+                Navigation.findNavController(view).navigate(LoginFragmentDirections.actionGlobalFeedFragment());
+            }
+        });
+
+        signupBtn.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment());
         });
 
         return view;

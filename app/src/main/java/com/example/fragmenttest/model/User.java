@@ -6,11 +6,18 @@ public class User implements Serializable {
     public String id;
     public String username;
     public String phone;
+    public String firstName;
+    public String lastName;
+    public String email;
 
-    public User(String id, String username, String phone) {
+
+    public User(String id, String username, String phone, String firstName, String lastName, String email) {
         this.id=id;
         this.username = username;
         this.phone = phone;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
     }
 
     public String getId() {
@@ -35,5 +42,9 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String toString() {
+        return this.username + " " + this.email + " " + this.phone + " " + this.firstName + " " + this.lastName;
     }
 }

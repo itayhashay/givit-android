@@ -57,12 +57,12 @@ public class MainFragment extends Fragment {
         TextView signupTv = view.findViewById(R.id.main_signup_tv);
         signupTv.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.signupFragment));
 
-        Button userBtn = view.findViewById(R.id.main_user_btn);
+//        Button userBtn = view.findViewById(R.id.main_user_btn);
 
 //        userBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.user));
-        userBtn.setOnClickListener((view1) -> {
-            Navigation.findNavController(view).navigate(R.id.action_global_feedFragment);
-        });
+//        userBtn.setOnClickListener((view1) -> {
+//            Navigation.findNavController(view).navigate(R.id.action_global_feedFragment);
+//        });
 
 
         TextView titleTv = view.findViewById(R.id.loginfrag_title_tv);
