@@ -67,4 +67,9 @@
             android:name="item"
             app:argType="com.example.fragmenttest.model.Item" />
     </fragment>
+    <fragment
+        android:id="@+id/newItemFragment"
+        android:name="com.example.fragmenttest.NewItemFragment"
+        android:label="NewItemFragment" />
+    <action android:id="@+id/action_global_newItemFragment" app:destination="@id/newItemFragment" />
 </navigation>

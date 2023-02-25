@@ -3,23 +3,17 @@ package com.example.fragmenttest;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserSectionFragment#newInstance} factory method to
+ * Use the {@link NewItemFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserSectionFragment extends Fragment {
-    NavController userNavController;
+public class NewItemFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,17 +24,9 @@ public class UserSectionFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UserSectionFragment() {
+    public NewItemFragment() {
         // Required empty public constructor
     }
-
-    public static UserSectionFragment newInstance() {
-        UserSectionFragment fragment = new UserSectionFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 
     /**
      * Use this factory method to create a new instance of
@@ -48,11 +34,11 @@ public class UserSectionFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment UserSectionFragment.
+     * @return A new instance of fragment NewItemFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserSectionFragment newInstance(String param1, String param2) {
-        UserSectionFragment fragment = new UserSectionFragment();
+    public static NewItemFragment newInstance(String param1, String param2) {
+        NewItemFragment fragment = new NewItemFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,18 +49,16 @@ public class UserSectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        NavHostFragment navHostFragment = (NavHostFragment)getParentFragmentManager().findFragmentById(R.id.user_section_navhost);
-        userNavController = navHostFragment.getNavController();
-
-        BottomNavigationView userSectionNavView = getView().findViewById(R.id.user_section_navbar);
-        NavigationUI.setupWithNavController(userSectionNavView, userNavController);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_section, container, false);
+        return inflater.inflate(R.layout.fragment_new_item, container, false);
     }
 }

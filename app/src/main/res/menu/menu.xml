@@ -3,13 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/main_menu_user"
+        android:id="@+id/newItemFragment"
+        android:icon="@drawable/plus"
+        android:title="Item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/userSectionFragment"
         android:icon="@drawable/user"
         android:title="Item"
         app:showAsAction="always" />
     <item
-        android:id="@+id/main_menu_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:id="@+id/feedFragment"
+        android:icon="@drawable/home"
         android:title="Add"
         app:showAsAction="always" />
 </menu>

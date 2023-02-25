@@ -1,12 +1,9 @@
 package com.example.fragmenttest;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -65,7 +62,7 @@ public class MainFragment extends Fragment {
 //        });
 
 
-        TextView titleTv = view.findViewById(R.id.loginfrag_title_tv);
+        TextView titleTv = view.findViewById(R.id.add_item_title_tv);
         if (title != null) {
             titleTv.setText(title);
         }

@@ -18,7 +18,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     NavController navController;
-    NavController userNavController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController);
-
-//        BottomNavigationView userSectionNavView = findViewById(R.id.user_section_navbar);
-//        NavigationUI.setupWithNavController(userSectionNavView, navController);
     }
 
     @Override
@@ -44,10 +40,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home) {
             navController.popBackStack();
-        } else if(item.getItemId() == R.id.main_menu_add) {
-            navController.navigate(R.id.action_global_feedFragment);
-        } else if(item.getItemId() == R.id.main_menu_user) {
-            navController.navigate(R.id.action_global_userSectionFragment);
+        } else {
+            return NavigationUI.onNavDestinationSelected(item, navController);
         }
         return super.onOptionsItemSelected(item);
     }
