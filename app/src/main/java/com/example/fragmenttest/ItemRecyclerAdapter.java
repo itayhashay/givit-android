@@ -13,7 +13,6 @@ class ItemViewHolder extends RecyclerView.ViewHolder {
     TextView nameTv;
     TextView descriptionTv;
     List<Item> itemList;
-
     public ItemViewHolder(@NonNull View itemView, ItemRecyclerAdapter.OnItemClickListener listener, List<Item> itemList) {
         super(itemView);
         this.itemList = itemList;
@@ -44,6 +43,11 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     LayoutInflater inflater;
     List<Item> itemList;
+
+    public void setItemList(List<Item> data) {
+        this.itemList = data;
+        notifyDataSetChanged();
+    }
 
     public ItemRecyclerAdapter(LayoutInflater inflater, List<Item> itemList) {
         this.inflater = inflater;

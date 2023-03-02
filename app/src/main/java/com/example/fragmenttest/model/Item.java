@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 public class Item implements Serializable {
@@ -19,11 +20,21 @@ public class Item implements Serializable {
     public String address;
     public String userId;
 
-    public Item(String id, String name, String description, String address, String userId) {
+    public Item(String name, String description, String address, String userId) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.address = address;
         this.userId = userId;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
     public String getName() {

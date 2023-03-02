@@ -14,16 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.fragmenttest.databinding.FragmentFeedBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class FeedFragment extends Fragment {
 
-    List<Item> itemList;
+    List<Item> itemList = new LinkedList<>();
+    ItemRecyclerAdapter adapter;
+    FragmentFeedBinding binding;
 
-    public static FeedFragment newInstance(){
+    public static FeedFragment newInstance() {
         return new FeedFragment();
     }
 
@@ -32,13 +36,14 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
-        itemList = Model.getInstance().getAllItems();
-
-        RecyclerView itemsList = view.findViewById(R.id.item_list_feed);
+//        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        binding = FragmentFeedBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        reloadData();
+        RecyclerView itemsList = binding.itemListFeed;
         itemsList.setHasFixedSize(true);
         itemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(getLayoutInflater(), itemList);
+        adapter = new ItemRecyclerAdapter(getLayoutInflater(), itemList);
         itemsList.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ItemRecyclerAdapter.OnItemClickListener() {
@@ -52,5 +57,20 @@ public class FeedFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reloadData();
+    }
+
+    void reloadData() {
+        binding.progressBar2.setVisibility(View.VISIBLE);
+        Model.getInstance().getAllItems((lst) -> {
+            itemList = lst;
+            adapter.setItemList(itemList);
+            binding.progressBar2.setVisibility(View.GONE);
+        });
     }
 }

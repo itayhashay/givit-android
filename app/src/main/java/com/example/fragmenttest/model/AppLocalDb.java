@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.fragmenttest.MyApplication;
 
-@Database(entities = {User.class, Item.class}, version = 1)
+@Database(entities = {User.class, Item.class}, version = 3)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract ItemDao itemDao();
@@ -19,4 +19,6 @@ public class AppLocalDb{
                     .fallbackToDestructiveMigration()
                     .build();
     }
+
+    private AppLocalDb(){}
 }

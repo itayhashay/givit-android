@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 public class User implements Serializable {
@@ -18,8 +19,8 @@ public class User implements Serializable {
     public String email;
 
 
-    public User(String id, String username, String phone, String firstName, String lastName, String email) {
-        this.id=id;
+    public User(String username, String phone, String firstName, String lastName, String email) {
+        this.id= UUID.randomUUID().toString();
         this.username = username;
         this.phone = phone;
         this.lastName = lastName;

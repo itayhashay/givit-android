@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.fragmenttest.databinding.FragmentFeedBinding;
+import com.example.fragmenttest.databinding.FragmentItemCardBinding;
+import com.example.fragmenttest.databinding.FragmentMyItemsBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +28,9 @@ import java.util.List;
  */
 public class MyItemsFragment extends Fragment {
 
-    List<Item> itemList;
+    List<Item> itemList = new LinkedList<>();
+    ItemRecyclerAdapter adapter;
+    FragmentMyItemsBinding binding;
 
     public static MyItemsFragment newInstance(){
         return new MyItemsFragment();
@@ -35,13 +41,18 @@ public class MyItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_items, container, false);
-        itemList = Model.getInstance().getAllItems();
+//        View view = inflater.inflate(R.layout.fragment_my_items, container, false);
+        binding = FragmentMyItemsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        Model.getInstance().getAllItems((lst)->{
+            itemList = lst;
+            adapter.setItemList(itemList);
+        });
 
-        RecyclerView itemsList = view.findViewById(R.id.my_items_list);
+        RecyclerView itemsList = binding.myItemsList;
         itemsList.setHasFixedSize(true);
         itemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        ItemRecyclerAdapter adapter = new ItemRecyclerAdapter(getLayoutInflater(), itemList);
+        adapter = new ItemRecyclerAdapter(getLayoutInflater(), itemList);
         itemsList.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ItemRecyclerAdapter.OnItemClickListener() {
@@ -55,5 +66,16 @@ public class MyItemsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.progressBar.setVisibility(View.VISIBLE);
+        Model.getInstance().getAllItems((lst) -> {
+            itemList = lst;
+            adapter.setItemList(itemList);
+            binding.progressBar.setVisibility(View.GONE);
+        });
     }
 }

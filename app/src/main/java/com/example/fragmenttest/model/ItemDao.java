@@ -16,6 +16,9 @@ public interface ItemDao {
     @Query("select * from Item where id = :itemId")
     Item getItemById(String itemId);
 
+    @Query("select * from Item where userId = :userId")
+    List<Item> getItemsByUserId(String userId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Item ...items);
 

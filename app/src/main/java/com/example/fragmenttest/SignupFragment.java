@@ -45,8 +45,6 @@ public class SignupFragment extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = new User("1", usernameEt.getText().toString(), phoneEt.getText().toString(), firstNameEt.getText().toString(), lastNameEt.getText().toString(),emailEt.getText().toString());
-                Log.d("TAG", user.toString() + " " + passwordEt.getText().toString());
                 if(user.firstName.equals("") || user.firstName.equals("First Name") || user.lastName.equals("") || user.lastName.equals("Last Name") || user.username.equals("") || user.username.equals("User Name") || user.phone.equals("") || user.phone.equals("Phone") || user.email.equals("") || user.email.equals("Email") || passwordEt.getText().toString().equals("") || passwordEt.getText().toString().equals("Password")) {
                     Toast.makeText(view.getContext(), "Please Don't Leave Empty Spaces", Toast.LENGTH_SHORT).show();
                 }else {

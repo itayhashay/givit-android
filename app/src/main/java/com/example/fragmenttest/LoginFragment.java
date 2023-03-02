@@ -17,11 +17,9 @@ import android.widget.Toast;
 
 public class LoginFragment extends Fragment {
     String title;
-//    EditText usernamePt;
-//    EditText passwordPt;
     Button submitBtn;
     Button signupBtn;
-    String  password;
+    String password;
     String username;
 
     public LoginFragment() {
