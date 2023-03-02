@@ -15,7 +15,7 @@ public class Model {
     private Model() {
         for (int i = 0; i < 10; i++) {
             User user = createUser();
-            addItem(new Item("Table" +i, "Descriptionnnnnnn", "Yahud City", user));
+            addItem(new Item("1","Table" +i, "Descriptionnnnnnn", "Yahud City", "1"));
         }
     }
 

@@ -36,9 +36,9 @@ public class ItemDetailsFragment extends Fragment {
         // Get the arguments passed to this fragment
         if (getArguments() != null) {
             item = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItem();
-            Log.d("TAG", item.user.username);
+            Log.d("TAG", item.userId);
             nameTv.setText(item.getName());
-            usernameTv.setText(item.getUser().getUsername());
+            usernameTv.setText(item.getUserId());
         }
         return view;
     }
