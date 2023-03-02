@@ -3,12 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/myItemsFragment"
+        android:icon="@drawable/boxes"
+        android:title="My Items"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/newItemFragment"
         android:icon="@drawable/plus"
         android:title="Item"
         app:showAsAction="always" />
     <item
-        android:id="@+id/userSectionFragment"
+        android:id="@+id/personalInfoFragment"
         android:icon="@drawable/user"
         android:title="Item"
         app:showAsAction="always" />

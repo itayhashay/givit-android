@@ -67,14 +67,14 @@ public class LoginFragment extends Fragment {
         menu.clear();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity)getActivity()).getSupportActionBar().hide();
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((MainActivity)getActivity()).getSupportActionBar().show();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((MainActivity)getActivity()).getSupportActionBar().hide();
+//    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        ((MainActivity)getActivity()).getSupportActionBar().show();
+//    }
 }

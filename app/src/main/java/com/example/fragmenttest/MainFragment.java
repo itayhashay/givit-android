@@ -17,7 +17,6 @@ public class MainFragment extends Fragment {
     String title;
 
     LoginFragment loginFrag;
-    UserSectionFragment userSectionFrag;
 
     public static MainFragment newInstance(String title) {
         MainFragment frag = new MainFragment();
@@ -43,7 +42,6 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         loginFrag = LoginFragment.newInstance();
-        userSectionFrag = UserSectionFragment.newInstance();
 
         Button loginBtn = view.findViewById(R.id.main_login_btn);
         MainFragmentDirections.ActionMainFragmentToLoginFragment action = MainFragmentDirections.actionMainFragmentToLoginFragment("GIVIT");
@@ -62,21 +60,21 @@ public class MainFragment extends Fragment {
 //        });
 
 
-        TextView titleTv = view.findViewById(R.id.add_item_title_tv);
+        TextView titleTv = view.findViewById(R.id.personal_info_title_tv);
         if (title != null) {
             titleTv.setText(title);
         }
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity)getActivity()).getSupportActionBar().hide();
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((MainActivity)getActivity()).getSupportActionBar().show();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((MainActivity)getActivity()).getSupportActionBar().hide();
+//    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        ((MainActivity)getActivity()).getSupportActionBar().show();
+//    }
 }

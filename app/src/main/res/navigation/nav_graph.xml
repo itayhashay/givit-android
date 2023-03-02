@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_feed" >
         <action
             android:id="@+id/action_feedFragment_to_userSectionFragment"
-            app:destination="@id/userSectionFragment" />
+            app:destination="@id/personalInfoFragment" />
         <action
             android:id="@+id/action_feedFragment_to_itemDetailsFragment"
             app:destination="@id/itemDetailsFragment" >
@@ -54,10 +54,10 @@
         </action>
     </fragment><action android:id="@+id/action_global_feedFragment" app:destination="@id/feedFragment"/>
     <fragment
-        android:id="@+id/userSectionFragment"
+        android:id="@+id/personalInfoFragment"
         android:name="com.example.fragmenttest.UserSectionFragment"
         android:label="fragment_user_section"
-        tools:layout="@layout/fragment_user_section" /><action android:id="@+id/action_global_userSectionFragment" app:destination="@id/userSectionFragment"/>
+        tools:layout="@layout/fragment_user_section" />
     <fragment
         android:id="@+id/itemDetailsFragment"
         android:name="com.example.fragmenttest.ItemDetailsFragment"
@@ -72,4 +72,21 @@
         android:name="com.example.fragmenttest.NewItemFragment"
         android:label="NewItemFragment" />
     <action android:id="@+id/action_global_newItemFragment" app:destination="@id/newItemFragment" />
+    <action android:id="@+id/action_global_personalInfoFragment2" app:destination="@id/personalInfoFragment" />
+    <fragment
+        android:id="@+id/myItemsFragment"
+        android:name="com.example.fragmenttest.MyItemsFragment"
+        android:label="fragment_my_items"
+        tools:layout="@layout/fragment_my_items" >
+        <action
+            android:id="@+id/action_myItemsFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_myItemsFragment2" app:destination="@id/myItemsFragment" />
+    <fragment
+        android:id="@+id/personalInfoFragment"
+        android:name="com.example.fragmenttest.PersonalInfoFragment"
+        android:label="fragment_personal_info"
+        tools:layout="@layout/fragment_personal_info" />
+    <action android:id="@+id/action_global_personalInfoFragment" app:destination="@id/personalInfoFragment" />
 </navigation>

@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
     private void setTopBarColor(String color) {
         ActionBar actionBar = getSupportActionBar();
 
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+//        actionBar.setIcon(R.drawable.present);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("GIVIT");
+
+
         // Define ColorDrawable object and parse color
         // using parseColor method
         // with color hash code as its parameter
@@ -57,6 +68,5 @@ public class MainActivity extends AppCompatActivity {
 
         // Set BackgroundDrawable
         actionBar.setBackgroundDrawable(colorDrawable);
-
     }
 }
