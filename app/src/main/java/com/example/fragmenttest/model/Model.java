@@ -62,12 +62,13 @@ public class Model {
     public interface DeleteItemListener{
         void onComplete();
     }
-    public void deleteItem(int itemIndex) {
-        try {
-            itemsList.remove(itemIndex);
-        } catch (Exception e) {
-            Log.d("ERROR", e.getMessage());
-        }
+    public void deleteItem(Item item, DeleteItemListener callback) {
+        executor.execute(() -> {
+            localDb.itemDao().delete(item);
+            mainHandler.post(() -> {
+                callback.onComplete();
+            });
+        });
     }
 
     public void editItem(int itemIndex, Item updatedItem) {
