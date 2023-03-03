@@ -20,11 +20,65 @@
         android:background="@drawable/yellow_layout_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/item_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="7dp"
+            android:text="Description:"
+            android:textColor="#3C3C3C"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/edit_item_desc_pt"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/item_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="7dp"
+            android:text="Address:"
+            android:textColor="#3C3C3C"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/edit_item_address_pt"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/item_images_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="7dp"
+            android:text="Photos:"
+            android:textColor="#3C3C3C"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/add_photos_pt"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/item_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="7dp"
+            android:text="Title:"
+            android:textColor="#3C3C3C"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/item_title_pt"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/add_item_submit_btn"
+            android:id="@+id/edit_item_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="41dp"
@@ -39,7 +93,7 @@
             app:layout_constraintTop_toBottomOf="@+id/add_photos_pt" />
 
         <EditText
-            android:id="@+id/item_desc_pt"
+            android:id="@+id/edit_item_desc_pt"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginStart="30dp"
@@ -51,9 +105,8 @@
             android:minHeight="48dp"
             android:padding="10dp"
             android:paddingStart="15dp"
-            android:text="Description"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/item_address_pt"
+            app:layout_constraintBottom_toTopOf="@+id/edit_item_address_pt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,16 +125,15 @@
             android:minHeight="48dp"
             android:padding="10dp"
             android:paddingStart="15dp"
-            android:text="Add Photos"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/add_item_submit_btn"
+            app:layout_constraintBottom_toTopOf="@+id/edit_item_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_address_pt" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_item_address_pt" />
 
         <EditText
-            android:id="@+id/item_address_pt"
+            android:id="@+id/edit_item_address_pt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -92,13 +144,12 @@
             android:minHeight="48dp"
             android:padding="10dp"
             android:paddingStart="15dp"
-            android:text="Address"
             android:textSize="14dp"
             app:layout_constraintBottom_toTopOf="@+id/add_photos_pt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_desc_pt" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_item_desc_pt" />
 
         <EditText
             android:id="@+id/item_title_pt"
@@ -114,9 +165,8 @@
             android:minHeight="48dp"
             android:padding="10dp"
             android:paddingStart="15dp"
-            android:text="Title"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/item_desc_pt"
+            app:layout_constraintBottom_toTopOf="@+id/edit_item_desc_pt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

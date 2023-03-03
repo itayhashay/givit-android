@@ -60,7 +60,7 @@ public class MyItemsFragment extends Fragment {
             public void onItemClick(int position) {
                 Item clickedItem = itemList.get(position);
                 Log.d("TAG", clickedItem.name + " clicked");
-                MyItemsFragmentDirections.ActionMyItemsFragmentToItemDetailsFragment action = MyItemsFragmentDirections.actionMyItemsFragmentToItemDetailsFragment(clickedItem);
+                MyItemsFragmentDirections.ActionMyItemsFragmentToEditItemFragment action = MyItemsFragmentDirections.actionMyItemsFragmentToEditItemFragment(clickedItem);
                 Navigation.findNavController(view).navigate(action);
             }
         });
