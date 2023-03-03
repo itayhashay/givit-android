@@ -71,12 +71,16 @@ public class Model {
         });
     }
 
-    public void editItem(int itemIndex, Item updatedItem) {
-        try {
-            itemsList.set(itemIndex, updatedItem);
-        } catch (Exception e) {
-            Log.d("ERROR", e.getMessage());
-        }
+    public interface EditItemListener{
+        void onComplete();
+    }
+    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, EditItemListener callback) {
+        executor.execute(() -> {
+            localDb.itemDao().editItem(itemId, itemName, itemDescription, itemAddress);
+            mainHandler.post(() -> {
+                callback.onComplete();
+            });
+        });
     }
 
 }

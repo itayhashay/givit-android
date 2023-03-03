@@ -27,6 +27,7 @@ public class EditItemFragment extends Fragment {
     EditText addressPt;
 
     Button deleteBtn;
+    Button editBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +39,7 @@ public class EditItemFragment extends Fragment {
         addressPt = view.findViewById(R.id.edit_item_address_pt);
 
         deleteBtn = view.findViewById(R.id.delete_item_btn);
+        editBtn = view.findViewById(R.id.edit_item_btn);
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {
@@ -47,6 +49,19 @@ public class EditItemFragment extends Fragment {
             descriptionPt.setText(item.getDescription());
             addressPt.setText(item.getAddress());
         }
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = namePt.getText().toString();
+                String description = descriptionPt.getText().toString();
+                String address = addressPt.getText().toString();
+
+                Model.getInstance().editItem(item.getId(), name, description, address, ()->{
+                    Navigation.findNavController(view).popBackStack();
+                });
+            }
+        });
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
