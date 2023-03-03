@@ -8,6 +8,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +29,16 @@ public class Item implements Serializable {
         this.address = address;
         this.userId = userId;
     }
+
+
+//
+//    public Item(String id, String name, String description, String address, String userId) {
+//        this.id = id;
+//        this.name = name;
+//        this.description = description;
+//        this.address = address;
+//        this.userId = userId;
+//    }
 
     @NonNull
     public String getId() {
@@ -67,5 +79,26 @@ public class Item implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("id", this.getId());
+        json.put("name", this.getName());
+        json.put("address", this.getAddress());
+        json.put("description", this.getDescription());
+        json.put("userId", this.getUserId());
+        return json;
+    }
+
+    public static Item fromJson(Map<String, Object> json) {
+        String id = (String)json.get("id");
+        String name = (String)json.get("name");
+        String address = (String)json.get("address");
+        String description = (String)json.get("description");
+        String userId = (String)json.get("userId");
+        Item i = new Item(name,description,address,userId);
+        i.setId(id);
+        return i;
     }
 }
