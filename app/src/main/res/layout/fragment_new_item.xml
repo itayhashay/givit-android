@@ -78,7 +78,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/edit_item_btn"
+            android:id="@+id/edit_user_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="41dp"
@@ -126,7 +126,7 @@
             android:padding="10dp"
             android:paddingStart="15dp"
             android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/edit_item_btn"
+            app:layout_constraintBottom_toTopOf="@+id/edit_user_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

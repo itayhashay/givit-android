@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
@@ -39,7 +38,7 @@ public class EditItemFragment extends Fragment {
         addressPt = view.findViewById(R.id.edit_item_address_pt);
 
         deleteBtn = view.findViewById(R.id.delete_item_btn);
-        editBtn = view.findViewById(R.id.edit_item_btn);
+        editBtn = view.findViewById(R.id.edit_user_btn);
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {

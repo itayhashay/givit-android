@@ -3,62 +3,52 @@ package com.example.fragmenttest;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PersonalInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.fragmenttest.model.Model;
+
 public class PersonalInfoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PersonalInfoFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PersonalInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PersonalInfoFragment newInstance(String param1, String param2) {
-        PersonalInfoFragment fragment = new PersonalInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    EditText firstNameEt;
+    EditText lastNameEt;
+    EditText usernameEt;
+    EditText phoneEt;
+    Button submitBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_personal_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_personal_info, container, false);
+
+        firstNameEt = view.findViewById(R.id.user_firstname_pt);
+        lastNameEt = view.findViewById(R.id.user_lastname_pt);
+        usernameEt = view.findViewById(R.id.user_username_pt);
+        phoneEt = view.findViewById(R.id.user_phone_pt);
+        submitBtn = view.findViewById(R.id.edit_user_btn);
+
+        Model.getInstance().getUserById(Model.getInstance().getCurrentUserUID(), user -> {
+            firstNameEt.setText(user.firstName);
+            lastNameEt.setText(user.lastName);
+            usernameEt.setText(user.username);
+            phoneEt.setText(user.phone);
+        });
+
+        submitBtn.setOnClickListener(v -> {
+            String firstName = firstNameEt.getText().toString();
+            String lastName = lastNameEt.getText().toString();
+            String username = usernameEt.getText().toString();
+            String phone = phoneEt.getText().toString();
+            Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,() -> {
+                Navigation.findNavController(view).popBackStack();
+            });
+        });
+        return view;
     }
 }

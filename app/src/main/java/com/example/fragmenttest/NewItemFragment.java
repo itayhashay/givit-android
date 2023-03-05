@@ -36,13 +36,11 @@ public class NewItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_item, container, false);
 
-        sumbitBtn = view.findViewById(R.id.edit_item_btn);
+        sumbitBtn = view.findViewById(R.id.edit_user_btn);
         nameEt = view.findViewById(R.id.item_title_pt);
         descriptionEt = view.findViewById(R.id.edit_item_desc_pt);
         addressEt = view.findViewById(R.id.edit_item_address_pt);
 
-        //TODO: CHANGE THE USER ID TO THE SPECIFFIC USER THAT INSERT THE ITEM
-        userId = "0";
 
 
         sumbitBtn.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +52,7 @@ public class NewItemFragment extends Fragment {
                 if(name.equals("") || name.equals("Title") || description.equals("") || description.equals("Description") || address.equals("") || address.equals("Address")) {
                     Toast.makeText(view.getContext(), "Please Don't Leave Empty Spaces", Toast.LENGTH_SHORT).show();
                 }else {
-                    Item item = new Item(name,description,address,userId);
+                    Item item = new Item(name,description,address,Model.getInstance().getCurrentUserUID());
                     Model.getInstance().addItem(item, ()->{
                         Navigation.findNavController(view).popBackStack();
                     });

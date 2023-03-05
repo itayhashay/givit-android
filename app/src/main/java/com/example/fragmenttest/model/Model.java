@@ -128,8 +128,8 @@ public class Model {
     public interface EditUserListener{
         void onComplete();
     }
-    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String email, EditUserListener callback) {
-        firebaseModel.editUser(userId, username, userPhone, firstName,lastName,email, callback);
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, EditUserListener callback) {
+        firebaseModel.editUser(userId, username, userPhone, firstName,lastName, callback);
     }
 
     public interface GetUserByIdListener{

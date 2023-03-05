@@ -129,14 +129,13 @@ public class FirebaseModel {
 
     }
 
-    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String email, Model.EditUserListener callback) {
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, Model.EditUserListener callback) {
         DocumentReference docRef = db.collection("users").document(userId);
         Map<String,Object> updates = new HashMap<>();
         updates.put("username", username);
         updates.put("phone", userPhone);
         updates.put("firstName", firstName);
         updates.put("lastName", lastName);
-        updates.put("email", email);
 
         docRef.update(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

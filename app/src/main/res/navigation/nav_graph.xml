@@ -90,7 +90,11 @@
         android:id="@+id/personalInfoFragment"
         android:name="com.example.fragmenttest.PersonalInfoFragment"
         android:label="fragment_personal_info"
-        tools:layout="@layout/fragment_personal_info" />
+        tools:layout="@layout/fragment_personal_info" >
+        <action
+            android:id="@+id/action_personalInfoFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
     <action android:id="@+id/action_global_personalInfoFragment" app:destination="@id/personalInfoFragment" />
     <fragment
         android:id="@+id/editItemFragment"

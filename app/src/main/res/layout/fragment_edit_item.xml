@@ -115,7 +115,7 @@
             android:layout_height="76dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/edit_item_btn"
+            app:layout_constraintBottom_toTopOf="@+id/edit_user_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -163,10 +163,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_item_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_user_btn" />
 
         <Button
-            android:id="@+id/edit_item_btn"
+            android:id="@+id/edit_user_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#3C3C3C"

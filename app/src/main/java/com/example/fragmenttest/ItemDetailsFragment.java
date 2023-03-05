@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.fragmenttest.databinding.FragmentItemCardBinding;
 import com.example.fragmenttest.model.Item;
+import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
 
 public class ItemDetailsFragment extends Fragment {
@@ -39,6 +40,10 @@ public class ItemDetailsFragment extends Fragment {
             Log.d("TAG", item.userId);
             nameTv.setText(item.getName());
             usernameTv.setText(item.getUserId());
+            Model.getInstance().getUserById(item.userId, user1 -> {
+                user=user1;
+                usernameTv.setText(user.username);
+            });
         }
         return view;
     }
