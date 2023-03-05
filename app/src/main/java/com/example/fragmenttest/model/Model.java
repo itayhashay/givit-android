@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -17,21 +19,40 @@ public class Model {
     private Executor executor = Executors.newSingleThreadExecutor();
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel  = new FirebaseModel();
-
+    private FirebaseAuthenticationModel authentication = new FirebaseAuthenticationModel();
     public static Model getInstance() {
         return _instance;
     }
 
-    private Model() {
-//        for (int i = 0; i < 10; i++) {
-//            User user = createUser();
-//            addItem(new Item("1","Table" +i, "Descriptionnnnnnn", "Yahud City", "1"));
-//        }
+    private Model() {}
+
+
+
+    public String getCurrentUserUID() {
+        return authentication.getCurrentUserUID();
     }
 
-//    private User createUser() {
-//        return new User("1", "dauss", "0543453552", "Itay", "Dauss","dauss@gmail.com");
-//    }
+    public boolean isSignedIn() {
+        return authentication.isUserSignedIn();
+    }
+
+    public interface FirebaseUserOnCompleteListener {
+        void onComplete(FirebaseUser firebaseUser, Exception ex);
+    }
+    public void signIn(String email, String password, FirebaseUserOnCompleteListener listener) {
+        authentication.signIn(email, password, listener);
+    }
+
+    public void signUp(String email, String password, FirebaseUserOnCompleteListener listener) {
+        authentication.register(email, password, listener);
+    }
+
+    public interface EmptyOnCompleteListener {
+        void onComplete();
+    }
+    public void signOut(EmptyOnCompleteListener listener) {
+        authentication.signOut(listener);
+    }
 
     List<Item> itemsList = new LinkedList<>();
 
