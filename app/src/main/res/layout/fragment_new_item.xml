@@ -52,19 +52,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/item_images_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="7dp"
-            android:text="Photos:"
-            android:textColor="#3C3C3C"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/add_photos_pt"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
             android:id="@+id/item_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,16 +68,54 @@
             android:id="@+id/edit_user_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="41dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="16dp"
             android:backgroundTint="#3C3C3C"
             android:text="Add Item"
             android:textColor="#FFFFFF"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.511"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/item_title_pt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/layout_bg"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:paddingStart="15dp"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/edit_item_desc_pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_photos_pt" />
+            app:layout_constraintTop_toBottomOf="@+id/avatar_image_iv" />
+
+        <EditText
+            android:id="@+id/edit_item_address_pt"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="205dp"
+            android:background="@drawable/layout_bg"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:paddingStart="15dp"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/edit_user_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/edit_item_desc_pt"
@@ -108,69 +133,21 @@
             android:textSize="14dp"
             app:layout_constraintBottom_toTopOf="@+id/edit_item_address_pt"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_title_pt" />
 
-        <EditText
-            android:id="@+id/add_photos_pt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/layout_bg"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:padding="10dp"
-            android:paddingStart="15dp"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/edit_user_btn"
+        <ImageView
+            android:id="@+id/avatar_image_iv"
+            android:layout_width="141dp"
+            android:layout_height="122dp"
+            android:src="@drawable/avatar"
+            app:layout_constraintBottom_toTopOf="@+id/item_title_pt"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_item_address_pt" />
-
-        <EditText
-            android:id="@+id/edit_item_address_pt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/layout_bg"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:padding="10dp"
-            android:paddingStart="15dp"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/add_photos_pt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_item_desc_pt" />
-
-        <EditText
-            android:id="@+id/item_title_pt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/layout_bg"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:padding="10dp"
-            android:paddingStart="15dp"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/edit_item_desc_pt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.489"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

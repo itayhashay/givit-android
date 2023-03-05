@@ -1,5 +1,6 @@
 package com.example.fragmenttest.model;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -137,6 +138,13 @@ public class Model {
     }
     public void getUserById(String userId, GetUserByIdListener callback) {
         firebaseModel.getUserById(userId, callback);
+    }
+
+    public interface UploadImageListener{
+        void onComplete(String url);
+    }
+    public void uploadImage(String fileName, Bitmap bitmap, UploadImageListener callback) {
+        firebaseModel.uploadImage(fileName, bitmap, callback);
     }
 }
 
