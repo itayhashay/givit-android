@@ -25,11 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyItemsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyItemsFragment extends Fragment {
 
     ItemRecyclerAdapter adapter;
@@ -50,7 +45,7 @@ public class MyItemsFragment extends Fragment {
         View view = binding.getRoot();
         Model.getInstance().getAllItems((lst)->{
             String userId = Model.getInstance().getCurrentUserUID();
-            viewModel.setData(lst.stream().filter(item -> item.userId == userId).collect(Collectors.toList()));
+            viewModel.setData(lst.stream().filter(item -> item.userId.equals(userId)).collect(Collectors.toList()));
             adapter.setItemList(viewModel.getData());
         });
 
@@ -85,7 +80,7 @@ public class MyItemsFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         Model.getInstance().getAllItems((lst) -> {
             String userId = Model.getInstance().getCurrentUserUID();
-            viewModel.setData(lst.stream().filter(item -> item.userId == userId).collect(Collectors.toList()));
+            viewModel.setData(lst.stream().filter(item -> item.userId.equals(userId)).collect(Collectors.toList()));
             adapter.setItemList(viewModel.getData());
             binding.progressBar.setVisibility(View.GONE);
         });
