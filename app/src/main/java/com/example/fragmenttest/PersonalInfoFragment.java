@@ -31,6 +31,8 @@ public class PersonalInfoFragment extends Fragment {
     Button submitBtn;
     ImageView imageIv;
 
+    String imageUrl;
+
     FragmentPersonalInfoBinding binding;
     ActivityResultLauncher<Void> cameraLauncher;
     Boolean isAvatarSelected = false;
@@ -71,6 +73,7 @@ public class PersonalInfoFragment extends Fragment {
             lastNameEt.setText(user.lastName);
             usernameEt.setText(user.username);
             phoneEt.setText(user.phone);
+            imageUrl = user.imageUrl;
         });
 
         submitBtn.setOnClickListener(v -> {
@@ -83,15 +86,17 @@ public class PersonalInfoFragment extends Fragment {
             imageIv.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) imageIv.getDrawable()).getBitmap();
 
-            Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,() -> {
-                if(isAvatarSelected) {
-                    Model.getInstance().uploadImage("user/" + Model.getInstance().getCurrentUserUID(), bitmap, url -> {
+            if(isAvatarSelected) {
+                Model.getInstance().uploadImage("user/" + Model.getInstance().getCurrentUserUID(), bitmap, url -> {
+                    Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,imageUrl,() -> {
                         Navigation.findNavController(view).popBackStack();
                     });
-                }else {
+                });
+            }else {
+                Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,imageUrl,() -> {
                     Navigation.findNavController(view).popBackStack();
-                }
-            });
+                });
+            }
         });
         return view;
     }

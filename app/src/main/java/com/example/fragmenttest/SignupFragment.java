@@ -93,15 +93,12 @@ public class SignupFragment extends Fragment {
                 }else {
                     Model.getInstance().signUp(email, password, (firebaseUser, ex) -> {
                         if(firebaseUser != null) {
-                            Model.getInstance().addUser(new User(Model.getInstance().getCurrentUserUID(), username, phone,firstName,lastName,email), () -> {
-                                if(isAvatarSelected) {
-                                    Model.getInstance().uploadImage("user/"+Model.getInstance().getCurrentUserUID(), bitmap, url -> {
-                                        Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
-                                    });
-                                }else {
+                            Model.getInstance().uploadImage("user/"+Model.getInstance().getCurrentUserUID(), bitmap, url -> {
+                                Model.getInstance().addUser(new User(Model.getInstance().getCurrentUserUID(), username, phone,firstName,lastName,email, url), () -> {
                                     Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
-                                }
+                                });
                             });
+
                         }else {
                             Log.d("TAG", ex.getMessage());
                             Toast.makeText(view.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();

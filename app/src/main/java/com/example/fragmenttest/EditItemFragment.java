@@ -75,6 +75,7 @@ public class EditItemFragment extends Fragment {
             namePt.setText(item.getName());
             descriptionPt.setText(item.getDescription());
             addressPt.setText(item.getAddress());
+
         }
 
         imageIv.setOnClickListener(v -> {
@@ -90,15 +91,18 @@ public class EditItemFragment extends Fragment {
                 imageIv.setDrawingCacheEnabled(true);
                 imageIv.buildDrawingCache();
                 Bitmap bitmap = ((BitmapDrawable) imageIv.getDrawable()).getBitmap();
-                Model.getInstance().editItem(item.getId(), name, description, address, ()->{
-                    if(isAvatarSelected){
-                        Model.getInstance().uploadImage("item/"+item.getId(), bitmap, url -> {
+                if(isAvatarSelected){
+                    Model.getInstance().uploadImage("item/"+item.getId(), bitmap, url -> {
+                        Model.getInstance().editItem(item.getId(), name, description, address,url, ()->{
                             Navigation.findNavController(view).popBackStack();
                         });
-                    } else {
+                    });
+                } else {
+                    Model.getInstance().editItem(item.getId(), name, description, address,item.imageUrl, ()->{
                         Navigation.findNavController(view).popBackStack();
-                    }
-                });
+                    });
+                }
+
             }
         });
 

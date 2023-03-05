@@ -100,8 +100,8 @@ public class Model {
     public interface EditItemListener{
         void onComplete();
     }
-    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, EditItemListener callback) {
-       firebaseModel.editItem(itemId,itemName,itemDescription,itemAddress,callback);
+    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EditItemListener callback) {
+       firebaseModel.editItem(itemId,itemName,itemDescription,itemAddress,imageUrl,callback);
 
 
 //        executor.execute(() -> {
@@ -129,8 +129,8 @@ public class Model {
     public interface EditUserListener{
         void onComplete();
     }
-    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, EditUserListener callback) {
-        firebaseModel.editUser(userId, username, userPhone, firstName,lastName, callback);
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,EditUserListener callback) {
+        firebaseModel.editUser(userId, username, userPhone, firstName,lastName,imageUrl, callback);
     }
 
     public interface GetUserByIdListener{

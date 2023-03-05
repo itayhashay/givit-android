@@ -85,12 +85,13 @@ public class FirebaseModel {
                 });
     }
 
-    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, Model.EditItemListener callback) {
+    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,Model.EditItemListener callback) {
         DocumentReference docRef = db.collection("items").document(itemId);
         Map<String,Object> updates = new HashMap<>();
         updates.put("name", itemName);
         updates.put("address", itemAddress);
         updates.put("description", itemDescription);
+        updates.put("imageUrl", imageUrl);
 
         docRef.update(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -136,13 +137,14 @@ public class FirebaseModel {
 
     }
 
-    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, Model.EditUserListener callback) {
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,Model.EditUserListener callback) {
         DocumentReference docRef = db.collection("users").document(userId);
         Map<String,Object> updates = new HashMap<>();
         updates.put("username", username);
         updates.put("phone", userPhone);
         updates.put("firstName", firstName);
         updates.put("lastName", lastName);
+        updates.put("imageUrl", imageUrl);
 
         docRef.update(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

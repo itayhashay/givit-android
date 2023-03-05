@@ -21,24 +21,24 @@ public class Item implements Serializable {
     public String description;
     public String address;
     public String userId;
+    public String imageUrl;
 
-    public Item(String name, String description, String address, String userId) {
+    public Item(String name, String description, String address, String userId, String imageUrl) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.address = address;
         this.userId = userId;
+        this.imageUrl=imageUrl;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-//
-//    public Item(String id, String name, String description, String address, String userId) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.address = address;
-//        this.userId = userId;
-//    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     @NonNull
     public String getId() {
@@ -88,6 +88,7 @@ public class Item implements Serializable {
         json.put("address", this.getAddress());
         json.put("description", this.getDescription());
         json.put("userId", this.getUserId());
+        json.put("imageUrl", this.getImageUrl());
         return json;
     }
 
@@ -97,7 +98,8 @@ public class Item implements Serializable {
         String address = (String)json.get("address");
         String description = (String)json.get("description");
         String userId = (String)json.get("userId");
-        Item i = new Item(name,description,address,userId);
+        String imageUrl = (String)json.get("imageUrl");
+        Item i = new Item(name,description,address,userId, imageUrl);
         i.setId(id);
         return i;
     }

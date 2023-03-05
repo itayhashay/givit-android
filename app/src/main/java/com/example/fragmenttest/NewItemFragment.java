@@ -91,16 +91,12 @@ public class NewItemFragment extends Fragment {
                 if(name.equals("") || name.equals("Title") || description.equals("") || description.equals("Description") || address.equals("") || address.equals("Address")) {
                     Toast.makeText(view.getContext(), "Please Don't Leave Empty Spaces", Toast.LENGTH_SHORT).show();
                 }else {
-                    Item item = new Item(name,description,address,Model.getInstance().getCurrentUserUID());
-                    Model.getInstance().addItem(item, ()->{
-                        if(isAvatarSelected){
-                            Model.getInstance().uploadImage("item/"+item.getId(),bitmap,url -> {
-                                Navigation.findNavController(view).popBackStack();
-                            });
-                        }else {
+                    Item item = new Item(name,description,address,Model.getInstance().getCurrentUserUID(),"");
+                    Model.getInstance().uploadImage("item/"+item.getId(),bitmap,url -> {
+                        item.setImageUrl(url);
+                        Model.getInstance().addItem(item, ()->{
                             Navigation.findNavController(view).popBackStack();
-                        }
-
+                        });
                     });
                 }
             }

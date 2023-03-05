@@ -19,15 +19,25 @@ public class User implements Serializable {
     public String firstName;
     public String lastName;
     public String email;
+    public String imageUrl;
 
 
-    public User(String id, String username, String phone, String firstName, String lastName, String email) {
+    public User(String id, String username, String phone, String firstName, String lastName, String email, String imageUrl) {
         this.id= id;
         this.username = username;
         this.phone = phone;
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -90,6 +100,7 @@ public class User implements Serializable {
         json.put("firstName", this.getFirstName());
         json.put("lastName", this.getLastName());
         json.put("email", this.getEmail());
+        json.put("imageUrl", this.getImageUrl());
         return json;
     }
 
@@ -100,7 +111,8 @@ public class User implements Serializable {
         String firstName = (String)json.get("firstName");
         String lastName = (String)json.get("lastName");
         String email = (String)json.get("email");
-        User user = new User(id,username,phone,firstName,lastName,email);
+        String imageUrl = (String)json.get("imageUrl");
+        User user = new User(id,username,phone,firstName,lastName,email,imageUrl);
         return user;
     }
 }
