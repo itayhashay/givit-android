@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
 
 
@@ -45,10 +46,28 @@ public class SignupFragment extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(user.firstName.equals("") || user.firstName.equals("First Name") || user.lastName.equals("") || user.lastName.equals("Last Name") || user.username.equals("") || user.username.equals("User Name") || user.phone.equals("") || user.phone.equals("Phone") || user.email.equals("") || user.email.equals("Email") || passwordEt.getText().toString().equals("") || passwordEt.getText().toString().equals("Password")) {
+//                user = new User(usernameEt.getText().toString(), )
+                String firstName = firstNameEt.getText().toString();
+                String lastName = lastNameEt.getText().toString();
+                String username = usernameEt.getText().toString();
+                String phone = phoneEt.getText().toString();
+                String email = emailEt.getText().toString();
+                String password = passwordEt.getText().toString();
+                if(firstName.equals("") || firstName.equals("First Name") || lastName.equals("") || lastName.equals("Last Name") || username.equals("") || username.equals("User Name") || phone.equals("") || phone.equals("Phone") || email.equals("") || email.equals("Email") || password.equals("") || password.equals("Password")) {
                     Toast.makeText(view.getContext(), "Please Don't Leave Empty Spaces", Toast.LENGTH_SHORT).show();
                 }else {
-                    Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
+                    Model.getInstance().signUp(email, password, (firebaseUser, ex) -> {
+                        if(firebaseUser != null) {
+                            Model.getInstance().addUser(new User(Model.getInstance().getCurrentUserUID(), username, phone,firstName,lastName,email), () -> {
+                                Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
+                            });
+//                            Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
+                        }else {
+                            Log.d("TAG", ex.getMessage());
+                            Toast.makeText(view.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+//                    Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
                 }
             }
         });

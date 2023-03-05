@@ -111,5 +111,32 @@ public class Model {
 //        });
     }
 
+    public interface GetAllUsersListener{
+        void onComplete(List<User> data);
+    }
+    public void getAllUsers(GetAllUsersListener callback) {
+        firebaseModel.getAllUsers(callback);
+    }
+
+    public interface AddUserListener{
+        void onComplete();
+    }
+    public void addUser(User user, AddUserListener callback) {
+        firebaseModel.addUser(user, callback);
+    }
+
+    public interface EditUserListener{
+        void onComplete();
+    }
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String email, EditUserListener callback) {
+        firebaseModel.editUser(userId, username, userPhone, firstName,lastName,email, callback);
+    }
+
+    public interface GetUserByIdListener{
+        void onComplete(User user);
+    }
+    public void getUserById(String userId, GetUserByIdListener callback) {
+        firebaseModel.getUserById(userId, callback);
+    }
 }
 

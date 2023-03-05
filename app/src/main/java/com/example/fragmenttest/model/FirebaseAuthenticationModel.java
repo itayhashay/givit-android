@@ -43,9 +43,23 @@ public class FirebaseAuthenticationModel {
                 });
     }
 
-    public void register(String email, String password, Model.FirebaseUserOnCompleteListener listener) {
+    public void register(String email, String password, Model.FirebaseUserOnCompleteListener callback) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> onAuthenticationComplete(task, listener));
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "createUserWithEmail:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            callback.onComplete(user, task.getException());
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                            callback.onComplete(null, task.getException());
+                        }
+                    }
+                });
     }
 
     public void signOut(Model.EmptyOnCompleteListener listener) {

@@ -99,4 +99,78 @@ public class FirebaseModel {
                     }
                 });
         }
+
+
+    public void getAllUsers(Model.GetAllUsersListener callback) {
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<User> users = new LinkedList<>();
+                if(task.isSuccessful()){
+//                    items.addAll(tesk)
+                    QuerySnapshot jsonList = task.getResult();
+                    for(DocumentSnapshot json: jsonList) {
+                        users.add(User.fromJson(json.getData()));
+                    }
+                }
+                callback.onComplete(users);
+            }
+        });
+    }
+
+    public void addUser(User user, Model.AddUserListener callback) {
+        db.collection("users").document(user.getId()).set(user.toJson()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("TAG", "addItem: " + user.toJson().toString());
+                callback.onComplete();
+            }
+        });
+
+    }
+
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String email, Model.EditUserListener callback) {
+        DocumentReference docRef = db.collection("users").document(userId);
+        Map<String,Object> updates = new HashMap<>();
+        updates.put("username", username);
+        updates.put("phone", userPhone);
+        updates.put("firstName", firstName);
+        updates.put("lastName", lastName);
+        updates.put("email", email);
+
+        docRef.update(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "DocumentSnapshot successfully updated!");
+                        callback.onComplete();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error updating document", e);
+                    }
+                });
+    }
+
+    public void getUserById(String userId,Model.GetUserByIdListener callback) {
+        DocumentReference docRef = db.collection("users").document(userId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                        callback.onComplete(User.fromJson(document.getData()));
+                    } else {
+                        Log.d("TAG", "No such document");
+                        callback.onComplete(null);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }
