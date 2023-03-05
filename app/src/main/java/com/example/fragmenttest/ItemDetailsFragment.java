@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fragmenttest.databinding.FragmentItemCardBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
+import com.squareup.picasso.Picasso;
 
 public class ItemDetailsFragment extends Fragment {
 
@@ -23,6 +25,7 @@ public class ItemDetailsFragment extends Fragment {
 
     TextView nameTv;
     TextView usernameTv;
+    ImageView imageIv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +43,11 @@ public class ItemDetailsFragment extends Fragment {
             Log.d("TAG", item.userId);
             nameTv.setText(item.getName());
             usernameTv.setText(item.getUserId());
+            if(item.getImageUrl() != null) {
+                Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(imageIv);
+            }else {
+                imageIv.setImageResource(R.drawable.item);
+            }
             Model.getInstance().getUserById(item.userId, user1 -> {
                 user=user1;
                 usernameTv.setText(user.username);

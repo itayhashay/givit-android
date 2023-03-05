@@ -23,6 +23,7 @@ import com.example.fragmenttest.databinding.FragmentEditItemBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
+import com.squareup.picasso.Picasso;
 
 public class EditItemFragment extends Fragment {
 
@@ -75,7 +76,11 @@ public class EditItemFragment extends Fragment {
             namePt.setText(item.getName());
             descriptionPt.setText(item.getDescription());
             addressPt.setText(item.getAddress());
-
+            if(item.getImageUrl()!=null)  {
+                Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(imageIv);
+            }else {
+                imageIv.setImageResource(R.drawable.item);
+            }
         }
 
         imageIv.setOnClickListener(v -> {

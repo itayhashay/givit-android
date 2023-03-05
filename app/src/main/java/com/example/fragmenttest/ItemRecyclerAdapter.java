@@ -3,21 +3,26 @@ package com.example.fragmenttest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.fragmenttest.model.Item;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 class ItemViewHolder extends RecyclerView.ViewHolder {
     TextView nameTv;
     TextView descriptionTv;
+    ImageView imageIv;
     List<Item> itemList;
     public ItemViewHolder(@NonNull View itemView, ItemRecyclerAdapter.OnItemClickListener listener, List<Item> itemList) {
         super(itemView);
         this.itemList = itemList;
         nameTv = itemView.findViewById(R.id.itemlistrow_name_tv);
         descriptionTv = itemView.findViewById(R.id.itemlistrow_description_tv);
+        imageIv = itemView.findViewById(R.id.itemlistrow_img);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,6 +34,11 @@ class ItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Item item, int position) {
+        if(item.getImageUrl()!=null)  {
+            Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(imageIv);
+        }else {
+            imageIv.setImageResource(R.drawable.item);
+        }
         nameTv.setText(item.name);
         descriptionTv.setText(item.description);
     }

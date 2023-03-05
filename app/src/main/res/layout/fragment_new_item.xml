@@ -141,7 +141,7 @@
             android:id="@+id/avatar_image_iv"
             android:layout_width="141dp"
             android:layout_height="122dp"
-            android:src="@drawable/avatar"
+            android:src="@drawable/item"
             app:layout_constraintBottom_toTopOf="@+id/item_title_pt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.489"

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import com.example.fragmenttest.databinding.FragmentNewItemBinding;
 import com.example.fragmenttest.databinding.FragmentPersonalInfoBinding;
 import com.example.fragmenttest.model.Model;
+import com.squareup.picasso.Picasso;
 
 public class PersonalInfoFragment extends Fragment {
 
@@ -74,6 +75,11 @@ public class PersonalInfoFragment extends Fragment {
             usernameEt.setText(user.username);
             phoneEt.setText(user.phone);
             imageUrl = user.imageUrl;
+            if(user.getImageUrl()!=null)  {
+                Picasso.get().load(user.getImageUrl()).placeholder(R.drawable.user).into(imageIv);
+            }else {
+                imageIv.setImageResource(R.drawable.user);
+            }
         });
 
         submitBtn.setOnClickListener(v -> {
