@@ -1,10 +1,13 @@
 package com.example.fragmenttest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +26,9 @@ import java.util.List;
 
 public class FeedFragment extends Fragment {
 
-    List<Item> itemList = new LinkedList<>();
     ItemRecyclerAdapter adapter;
     FragmentFeedBinding binding;
+    FeedFragmentViewModel viewModel;
 
     public static FeedFragment newInstance() {
         return new FeedFragment();
@@ -43,13 +46,13 @@ public class FeedFragment extends Fragment {
         RecyclerView itemsList = binding.itemListFeed;
         itemsList.setHasFixedSize(true);
         itemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ItemRecyclerAdapter(getLayoutInflater(), itemList);
+        adapter = new ItemRecyclerAdapter(getLayoutInflater(), viewModel.getData());
         itemsList.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ItemRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Item clickedItem = itemList.get(position);
+                Item clickedItem = viewModel.getData().get(position);
                 Log.d("TAG", clickedItem.name + " clicked");
                 FeedFragmentDirections.ActionFeedFragmentToItemDetailsFragment action = FeedFragmentDirections.actionFeedFragmentToItemDetailsFragment(clickedItem);
                 Navigation.findNavController(view).navigate(action);
@@ -57,6 +60,12 @@ public class FeedFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(FeedFragmentViewModel.class);
     }
 
     @Override
@@ -68,8 +77,8 @@ public class FeedFragment extends Fragment {
     void reloadData() {
         binding.progressBar2.setVisibility(View.VISIBLE);
         Model.getInstance().getAllItems((lst) -> {
-            itemList = lst;
-            adapter.setItemList(itemList);
+            viewModel.setData(lst);
+            adapter.setItemList(viewModel.getData());
             binding.progressBar2.setVisibility(View.GONE);
         });
     }
