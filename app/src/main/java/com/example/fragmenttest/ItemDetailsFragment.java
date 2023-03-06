@@ -36,6 +36,7 @@ public class ItemDetailsFragment extends Fragment {
 
         nameTv = view.findViewById(R.id.item_name_value);
         usernameTv = view.findViewById(R.id.item_username_value);
+        imageIv = view.findViewById(R.id.item_imgae_iv);
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {

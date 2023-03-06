@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/item_imgae_iv"
         android:layout_width="120dp"
         android:layout_height="124dp"
         android:layout_marginStart="20dp"
@@ -27,7 +27,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/item_imgae_iv" />
 
     <TextView
         android:id="@+id/item_name_value"

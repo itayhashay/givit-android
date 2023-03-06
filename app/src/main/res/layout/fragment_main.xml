@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/item_imgae_iv" />
 
     <Button
         android:id="@+id/main_login_btn"
@@ -59,7 +59,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView2" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/item_imgae_iv"
         android:layout_width="119dp"
         android:layout_height="124dp"
         android:layout_marginTop="110dp"

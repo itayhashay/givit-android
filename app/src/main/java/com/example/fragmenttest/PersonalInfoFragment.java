@@ -34,6 +34,7 @@ public class PersonalInfoFragment extends Fragment {
     EditText usernameEt;
     EditText phoneEt;
     Button submitBtn;
+    Button logoutBtn;
     ImageView imageIv;
     String imageUrl;
 
@@ -69,6 +70,7 @@ public class PersonalInfoFragment extends Fragment {
         phoneEt = view.findViewById(R.id.user_phone_pt);
         submitBtn = view.findViewById(R.id.edit_user_btn);
         imageIv =binding.avatarImageIv;
+        logoutBtn = binding.logoutUserBtn;
 
         imageIv.setOnClickListener(v -> {
             cameraLauncher.launch(null);
@@ -108,6 +110,12 @@ public class PersonalInfoFragment extends Fragment {
                     Navigation.findNavController(view).popBackStack();
                 });
             }
+        });
+
+        logoutBtn.setOnClickListener(v -> {
+            Model.getInstance().signOut(() -> {
+                Navigation.findNavController(view).navigate(PersonalInfoFragmentDirections.actionPersonalInfoFragmentToMainFragment());
+            });
         });
         return view;
     }

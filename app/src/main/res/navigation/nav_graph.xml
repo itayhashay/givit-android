@@ -94,6 +94,12 @@
         <action
             android:id="@+id/action_personalInfoFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_personalInfoFragment_self"
+            app:destination="@id/personalInfoFragment" />
+        <action
+            android:id="@+id/action_personalInfoFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <action android:id="@+id/action_global_personalInfoFragment" app:destination="@id/personalInfoFragment" />
     <fragment
