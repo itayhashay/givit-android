@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,20 +56,35 @@ public class Model {
         authentication.signOut(listener);
     }
 
-    List<Item> itemsList = new LinkedList<>();
+//    LiveData<List<Item>> itemsList;
 
     public interface GetAllItemsListener{
         void onComplete(List<Item> data);
     }
     public void getAllItems(GetAllItemsListener callback) {
-        firebaseModel.getAllItems(callback);
-//        executor.execute(() -> {
-//            List<Item> data = localDb.itemDao().getAll();
-//            mainHandler.post(() -> {
-//                itemsList = data;
-//                callback.onComplete(data);
-//            });
-//        });
+
+        long localLastUpdate = Item.getLocalLastUpdate();
+
+        firebaseModel.getAllItemsSince(localLastUpdate, list ->{
+            executor.execute(()->{
+                Log.d("TAG", "getAllItems: " + list.size());
+                long time = localLastUpdate;
+                for(Item item: list) {
+                    localDb.itemDao().insertAll(item);
+                    if(time< item.getLastUpdated()) {
+                        time = item.getLastUpdated();
+                    }
+                }
+                Item.setLocalLastUpdate(time);
+
+                List<Item> complete = localDb.itemDao().getAll();
+
+                mainHandler.post(()->{
+                    callback.onComplete(complete);
+                });
+            });
+        });
+
     }
 
     public interface AddItemListener{
@@ -76,24 +92,12 @@ public class Model {
     }
     public void addItem(Item item, AddItemListener callback) {
         firebaseModel.addItem(item,callback);
-//        executor.execute(() -> {
-//            localDb.itemDao().insertAll(item);
-//            mainHandler.post(() -> {
-//                callback.onComplete();
-//            });
-//        });
     }
 
     public interface DeleteItemListener{
         void onComplete();
     }
     public void deleteItem(Item item, DeleteItemListener callback) {
-//        executor.execute(() -> {
-//            localDb.itemDao().delete(item);
-//            mainHandler.post(() -> {
-//                callback.onComplete();
-//            });
-//        });
         firebaseModel.deleteItem(item,callback);
     }
 
@@ -102,14 +106,6 @@ public class Model {
     }
     public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EditItemListener callback) {
        firebaseModel.editItem(itemId,itemName,itemDescription,itemAddress,imageUrl,callback);
-
-
-//        executor.execute(() -> {
-//            localDb.itemDao().editItem(itemId, itemName, itemDescription, itemAddress);
-//            mainHandler.post(() -> {
-//                callback.onComplete();
-//            });
-//        });
     }
 
     public interface GetAllUsersListener{

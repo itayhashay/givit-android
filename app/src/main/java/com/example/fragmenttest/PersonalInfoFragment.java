@@ -1,5 +1,6 @@
 package com.example.fragmenttest;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -7,8 +8,10 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import com.example.fragmenttest.databinding.FragmentNewItemBinding;
 import com.example.fragmenttest.databinding.FragmentPersonalInfoBinding;
 import com.example.fragmenttest.model.Model;
+import com.example.fragmenttest.model.User;
 import com.squareup.picasso.Picasso;
 
 public class PersonalInfoFragment extends Fragment {
@@ -31,8 +35,9 @@ public class PersonalInfoFragment extends Fragment {
     EditText phoneEt;
     Button submitBtn;
     ImageView imageIv;
-
     String imageUrl;
+
+    PersonalInfoFragmentViewModel viewModel;
 
     FragmentPersonalInfoBinding binding;
     ActivityResultLauncher<Void> cameraLauncher;
@@ -69,14 +74,14 @@ public class PersonalInfoFragment extends Fragment {
             cameraLauncher.launch(null);
         });
 
-        Model.getInstance().getUserById(Model.getInstance().getCurrentUserUID(), user -> {
-            firstNameEt.setText(user.firstName);
-            lastNameEt.setText(user.lastName);
-            usernameEt.setText(user.username);
-            phoneEt.setText(user.phone);
-            imageUrl = user.imageUrl;
-            if(user.getImageUrl()!=null)  {
-                Picasso.get().load(user.getImageUrl()).placeholder(R.drawable.user).into(imageIv);
+        Model.getInstance().getUserById(Model.getInstance().getCurrentUserUID(), userFirebase -> {
+            viewModel.setUser(userFirebase);
+            firstNameEt.setText(viewModel.getUser().getFirstName());
+            lastNameEt.setText(viewModel.getUser().getLastName());
+            usernameEt.setText(viewModel.getUser().getUsername());
+            phoneEt.setText(viewModel.getUser().getPhone());
+            if(viewModel.getUser().getImageUrl()!=null)  {
+                Picasso.get().load(viewModel.getUser().getImageUrl()).placeholder(R.drawable.user).into(imageIv);
             }else {
                 imageIv.setImageResource(R.drawable.user);
             }
@@ -105,5 +110,11 @@ public class PersonalInfoFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(PersonalInfoFragmentViewModel.class);
     }
 }

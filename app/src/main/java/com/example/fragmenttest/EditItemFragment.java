@@ -1,5 +1,6 @@
 package com.example.fragmenttest;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -7,8 +8,11 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -27,12 +31,11 @@ import com.squareup.picasso.Picasso;
 
 public class EditItemFragment extends Fragment {
 
-    Item item;
-    User user;
-
     FragmentEditItemBinding binding;
     ActivityResultLauncher<Void> cameraLauncher;
     Boolean isAvatarSelected = false;
+
+    EditItemFragmentViewModel viewModel;
 
     EditText namePt;
     EditText descriptionPt;
@@ -71,13 +74,13 @@ public class EditItemFragment extends Fragment {
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {
-            item = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItem();
-            Log.d("TAG", item.userId);
-            namePt.setText(item.getName());
-            descriptionPt.setText(item.getDescription());
-            addressPt.setText(item.getAddress());
-            if(item.getImageUrl()!=null)  {
-                Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(imageIv);
+            viewModel.setItem(ItemDetailsFragmentArgs.fromBundle(getArguments()).getItem());
+            Log.d("TAG", viewModel.getItem().userId);
+            namePt.setText(viewModel.getItem().getName());
+            descriptionPt.setText(viewModel.getItem().getDescription());
+            addressPt.setText(viewModel.getItem().getAddress());
+            if(viewModel.getItem().getImageUrl()!=null)  {
+                Picasso.get().load(viewModel.getItem().getImageUrl()).placeholder(R.drawable.item).into(imageIv);
             }else {
                 imageIv.setImageResource(R.drawable.item);
             }
@@ -97,13 +100,13 @@ public class EditItemFragment extends Fragment {
                 imageIv.buildDrawingCache();
                 Bitmap bitmap = ((BitmapDrawable) imageIv.getDrawable()).getBitmap();
                 if(isAvatarSelected){
-                    Model.getInstance().uploadImage("item/"+item.getId(), bitmap, url -> {
-                        Model.getInstance().editItem(item.getId(), name, description, address,url, ()->{
+                    Model.getInstance().uploadImage("item/"+viewModel.getItem().getId(), bitmap, url -> {
+                        Model.getInstance().editItem(viewModel.getItem().getId(), name, description, address,url, ()->{
                             Navigation.findNavController(view).popBackStack();
                         });
                     });
                 } else {
-                    Model.getInstance().editItem(item.getId(), name, description, address,item.imageUrl, ()->{
+                    Model.getInstance().editItem(viewModel.getItem().getId(), name, description, address,viewModel.getItem().imageUrl, ()->{
                         Navigation.findNavController(view).popBackStack();
                     });
                 }
@@ -114,12 +117,18 @@ public class EditItemFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Model.getInstance().deleteItem(item, ()->{
+                Model.getInstance().deleteItem(viewModel.getItem(), ()->{
                     Navigation.findNavController(view).popBackStack();
                 });
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(EditItemFragmentViewModel.class);
     }
 }

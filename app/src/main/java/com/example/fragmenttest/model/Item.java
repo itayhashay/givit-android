@@ -1,11 +1,18 @@
 package com.example.fragmenttest.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.example.fragmenttest.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -22,6 +29,9 @@ public class Item implements Serializable {
     public String address;
     public String userId;
     public String imageUrl;
+    public long lastUpdated;
+
+    final static String LAST_UPDATED = "lastUpdated";
 
     public Item(String name, String description, String address, String userId, String imageUrl) {
         this.id = UUID.randomUUID().toString();
@@ -30,6 +40,15 @@ public class Item implements Serializable {
         this.address = address;
         this.userId = userId;
         this.imageUrl=imageUrl;
+    }
+
+    public static long getLocalLastUpdate() {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        return sharedPref.getLong("ITEMS_LOCAL_LAST_UPDATED", 0);
+    }
+
+    public static void setLocalLastUpdate(long time) {
+        MyApplication.getMyContext().getSharedPreferences("ITEMS_LOCAL_LAST_UPDATED", Context.MODE_PRIVATE).edit().putLong("ITEMS_LOCAL_LAST_UPDATED",time).commit();
     }
 
     public String getImageUrl() {
@@ -51,6 +70,14 @@ public class Item implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void setLastUpdated(long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public long getLastUpdated() {
+        return lastUpdated;
     }
 
     public void setName(String name) {
@@ -89,6 +116,7 @@ public class Item implements Serializable {
         json.put("description", this.getDescription());
         json.put("userId", this.getUserId());
         json.put("imageUrl", this.getImageUrl());
+        json.put("lastUpdated", FieldValue.serverTimestamp());
         return json;
     }
 
@@ -101,6 +129,13 @@ public class Item implements Serializable {
         String imageUrl = (String)json.get("imageUrl");
         Item i = new Item(name,description,address,userId, imageUrl);
         i.setId(id);
+        try {
+            Timestamp lastUpdated = (Timestamp)json.get(LAST_UPDATED);
+            i.setLastUpdated(lastUpdated.getSeconds());
+        } catch (Exception e) {
+            Log.w("TAG", e.getMessage());
+        }
         return i;
     }
+
 }

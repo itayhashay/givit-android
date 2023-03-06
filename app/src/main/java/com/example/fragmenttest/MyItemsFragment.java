@@ -45,7 +45,7 @@ public class MyItemsFragment extends Fragment {
         View view = binding.getRoot();
         Model.getInstance().getAllItems((lst)->{
             String userId = Model.getInstance().getCurrentUserUID();
-            viewModel.setData(lst.stream().filter(item -> item.userId.equals(userId)).collect(Collectors.toList()));
+            viewModel.setData(lst.stream().filter(item -> item.userId == userId).collect(Collectors.toList()));
             adapter.setItemList(viewModel.getData());
         });
 
