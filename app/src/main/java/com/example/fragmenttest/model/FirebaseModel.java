@@ -153,6 +153,7 @@ public class FirebaseModel {
         updates.put("firstName", firstName);
         updates.put("lastName", lastName);
         updates.put("imageUrl", imageUrl);
+        updates.put("lastUpdated", FieldValue.serverTimestamp());
 
         docRef.update(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
