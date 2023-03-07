@@ -30,6 +30,7 @@ public class Item implements Serializable {
     public String userId;
     public String imageUrl;
     public long lastUpdated;
+    public Boolean isDeleted = false;
 
     final static String LAST_UPDATED = "lastUpdated";
 
@@ -110,6 +111,14 @@ public class Item implements Serializable {
         this.userId = userId;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<>();
         json.put("id", this.getId());
@@ -119,6 +128,7 @@ public class Item implements Serializable {
         json.put("userId", this.getUserId());
         json.put("imageUrl", this.getImageUrl());
         json.put("lastUpdated", FieldValue.serverTimestamp());
+        json.put("isDeleted", this.getDeleted());
         return json;
     }
 
@@ -129,8 +139,10 @@ public class Item implements Serializable {
         String description = (String)json.get("description");
         String userId = (String)json.get("userId");
         String imageUrl = (String)json.get("imageUrl");
+        Boolean isDeleted = (Boolean)json.get("isDeleted");
         Item i = new Item(name,description,address,userId, imageUrl);
         i.setId(id);
+        i.setDeleted(isDeleted);
         try {
             Timestamp lastUpdated = (Timestamp)json.get(LAST_UPDATED);
             i.setLastUpdated(lastUpdated.getSeconds());

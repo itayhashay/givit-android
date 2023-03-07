@@ -12,7 +12,7 @@ import java.util.List;
 
 @Dao
 public interface ItemDao {
-    @Query("select * from Item ORDER BY id DESC")
+    @Query("select * from Item where isDeleted = 0 ORDER BY id DESC")
     LiveData<List<Item>> getAll();
 
     @Query("select * from Item where id = :itemId")

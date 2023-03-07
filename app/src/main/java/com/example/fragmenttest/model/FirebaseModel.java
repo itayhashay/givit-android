@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -72,12 +73,13 @@ public class FirebaseModel {
     }
 
     public void deleteItem(Item item, Model.DeleteItemListener callback) {
-        db.collection("items").document(item.getId())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        DocumentReference docRef = db.collection("items").document(item.getId());
+
+        docRef.update(item.toJson()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "DocumentSnapshot successfully deleted!");
+                        Log.d("TAG", "DocumentSnapshot successfully Deleted!");
                         callback.onComplete();
                     }
                 })
@@ -96,7 +98,7 @@ public class FirebaseModel {
         updates.put("address", itemAddress);
         updates.put("description", itemDescription);
         updates.put("imageUrl", imageUrl);
-
+        updates.put("lastUpdated", FieldValue.serverTimestamp());
         docRef.update(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

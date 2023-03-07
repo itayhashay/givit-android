@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Model {
     static final Model _instance = new Model();
@@ -85,7 +86,7 @@ public class Model {
             executor.execute(()->{
                 Log.d("TAG", "getAllItems: " + list.size());
                 long time = localLastUpdate;
-                for(Item item: list) {
+                for(Item item:  list.stream().filter(item -> !item.isDeleted).collect(Collectors.toList())) {
                     localDb.itemDao().insertAll(item);
                     if(time< item.getLastUpdated()) {
                         time = item.getLastUpdated();
@@ -113,7 +114,8 @@ public class Model {
     }
     public void deleteItem(Item item, DeleteItemListener callback) {
         executor.execute(() -> {
-            localDb.itemDao().delete(item);
+            item.setDeleted(true);
+            localDb.itemDao().insertAll(item);
         });
         firebaseModel.deleteItem(item,() -> {
             refreshAllItems();
