@@ -42,21 +42,34 @@ public class FeedFragment extends Fragment {
 //        View view = inflater.inflate(R.layout.fragment_feed, container, false);
         binding = FragmentFeedBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        reloadData();
         RecyclerView itemsList = binding.itemListFeed;
         itemsList.setHasFixedSize(true);
         itemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ItemRecyclerAdapter(getLayoutInflater(), viewModel.getData());
+        adapter = new ItemRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue());
         itemsList.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ItemRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Item clickedItem = viewModel.getData().get(position);
+                Item clickedItem = viewModel.getData().getValue().get(position);
                 Log.d("TAG", clickedItem.name + " clicked");
                 FeedFragmentDirections.ActionFeedFragmentToItemDetailsFragment action = FeedFragmentDirections.actionFeedFragmentToItemDetailsFragment(clickedItem);
                 Navigation.findNavController(view).navigate(action);
             }
+        });
+        binding.progressBar2.setVisibility(View.GONE);
+
+        viewModel.getData().observe(getViewLifecycleOwner(),items -> {
+            adapter.setItemList(items);
+
+        });
+
+        Model.getInstance().EventItemsListLoadingState.observe(getViewLifecycleOwner(), loadingStatus -> {
+            binding.swipeRefresh.setRefreshing(loadingStatus == Model.LoadingStatus.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            reloadData();
         });
 
         return view;
@@ -68,18 +81,8 @@ public class FeedFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(FeedFragmentViewModel.class);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        reloadData();
-    }
-
     void reloadData() {
-        binding.progressBar2.setVisibility(View.VISIBLE);
-        Model.getInstance().getAllItems((lst) -> {
-            viewModel.setData(lst);
-            adapter.setItemList(viewModel.getData());
-            binding.progressBar2.setVisibility(View.GONE);
-        });
+        Model.getInstance().refreshAllItems();
+//        binding.progressBar2.setVisibility(View.VISIBLE);
     }
 }

@@ -1,20 +1,18 @@
 package com.example.fragmenttest;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.fragmenttest.model.Item;
+import com.example.fragmenttest.model.Model;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class MyItemsFragmentViewModel extends ViewModel {
-    List<Item> itemList = new LinkedList<>();
+    LiveData<List<Item>> itemList = Model.getInstance().getAllItems();
 
-    public List<Item> getData() {
+    public LiveData<List<Item>> getData() {
         return itemList;
-    }
-
-    public void setData(List<Item> lst) {
-        this.itemList = lst;
     }
 }

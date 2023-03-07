@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fragmenttest.model.Item;
 import com.squareup.picasso.Picasso;
 
+import java.util.LinkedList;
 import java.util.List;
 
 class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +56,9 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     List<Item> itemList;
 
     public void setItemList(List<Item> data) {
+        if(data == null) {
+            data = new LinkedList<>();
+        }
         this.itemList = data;
         notifyDataSetChanged();
     }
@@ -82,6 +86,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public int getItemCount() {
+        if(itemList == null) return 0;
         return itemList.size();
     }
 

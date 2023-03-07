@@ -39,30 +39,33 @@ public class MyItemsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_my_items, container, false);
         binding = FragmentMyItemsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        Model.getInstance().getAllItems((lst)->{
-            String userId = Model.getInstance().getCurrentUserUID();
-            viewModel.setData(lst.stream().filter(item -> item.userId == userId).collect(Collectors.toList()));
-            adapter.setItemList(viewModel.getData());
-        });
-
         RecyclerView itemsList = binding.myItemsList;
         itemsList.setHasFixedSize(true);
         itemsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ItemRecyclerAdapter(getLayoutInflater(), viewModel.getData());
+
+        adapter = new ItemRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue()!=null ?  viewModel.getData().getValue().stream().filter(item -> item.getUserId().equals(Model.getInstance()
+                .getCurrentUserUID())).collect(Collectors.toList()) : new LinkedList<>());
         itemsList.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new ItemRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Item clickedItem = viewModel.getData().get(position);
+                Item clickedItem = viewModel.getData().getValue().get(position);
                 Log.d("TAG", clickedItem.name + " clicked");
                 MyItemsFragmentDirections.ActionMyItemsFragmentToEditItemFragment action = MyItemsFragmentDirections.actionMyItemsFragmentToEditItemFragment(clickedItem);
                 Navigation.findNavController(view).navigate(action);
             }
+        });
+
+        viewModel.getData().observe(getViewLifecycleOwner(),items -> {
+            if(items == null) {
+                items = new LinkedList<>();
+            }
+            adapter.setItemList(items.stream().filter(item -> item.getUserId().equals(Model.getInstance()
+                    .getCurrentUserUID())).collect(Collectors.toList()));
+            binding.progressBar.setVisibility(View.GONE);
         });
 
         return view;
@@ -77,12 +80,13 @@ public class MyItemsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Model.getInstance().refreshAllItems();
         binding.progressBar.setVisibility(View.VISIBLE);
-        Model.getInstance().getAllItems((lst) -> {
-            String userId = Model.getInstance().getCurrentUserUID();
-            viewModel.setData(lst.stream().filter(item -> item.userId.equals(userId)).collect(Collectors.toList()));
-            adapter.setItemList(viewModel.getData());
-            binding.progressBar.setVisibility(View.GONE);
-        });
+//        Model.getInstance().getAllItems((lst) -> {
+//            String userId = Model.getInstance().getCurrentUserUID();
+//            viewModel.setData(lst.stream().filter(item -> item.userId.equals(userId)).collect(Collectors.toList()));
+//            adapter.setItemList(viewModel.getData());
+//            binding.progressBar.setVisibility(View.GONE);
+//        });
     }
 }

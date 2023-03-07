@@ -48,7 +48,9 @@ public class Item implements Serializable {
     }
 
     public static void setLocalLastUpdate(long time) {
-        MyApplication.getMyContext().getSharedPreferences("ITEMS_LOCAL_LAST_UPDATED", Context.MODE_PRIVATE).edit().putLong("ITEMS_LOCAL_LAST_UPDATED",time).commit();
+        SharedPreferences.Editor ed = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        ed.putLong("ITEMS_LOCAL_LAST_UPDATED",time);
+        ed.commit();
     }
 
     public String getImageUrl() {

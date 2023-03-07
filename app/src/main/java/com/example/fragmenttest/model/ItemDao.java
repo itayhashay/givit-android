@@ -12,8 +12,8 @@ import java.util.List;
 
 @Dao
 public interface ItemDao {
-    @Query("select * from Item")
-    List<Item> getAll();
+    @Query("select * from Item ORDER BY id DESC")
+    LiveData<List<Item>> getAll();
 
     @Query("select * from Item where id = :itemId")
     Item getItemById(String itemId);

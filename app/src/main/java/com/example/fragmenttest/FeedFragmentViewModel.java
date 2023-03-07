@@ -1,20 +1,22 @@
 package com.example.fragmenttest;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.fragmenttest.model.Item;
+import com.example.fragmenttest.model.Model;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class FeedFragmentViewModel extends ViewModel {
-    List<Item> itemList = new LinkedList<>();
+    private LiveData<List<Item>> itemList;
 
-    public List<Item> getData() {
+    public FeedFragmentViewModel() {
+        itemList = Model.getInstance().getAllItems();
+    }
+
+    public LiveData<List<Item>> getData() {
         return itemList;
     }
-
-    public void setData(List<Item> lst) {
-        this.itemList = lst;
-    }
-
 }

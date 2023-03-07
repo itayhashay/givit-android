@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -28,6 +29,12 @@ public class Model {
 
     private Model() {}
 
+    public enum LoadingStatus{
+        LOADING,
+        NOT_LOADING
+    }
+
+   final public MutableLiveData<LoadingStatus> EventItemsListLoadingState = new MutableLiveData<>();
 
 
     public String getCurrentUserUID() {
@@ -56,12 +63,20 @@ public class Model {
         authentication.signOut(listener);
     }
 
-//    LiveData<List<Item>> itemsList;
+    LiveData<List<Item>> itemsList;
+    public LiveData<List<Item>> getAllItems(){
+        if(itemsList == null) {
+            itemsList = localDb.itemDao().getAll();
+            refreshAllItems();
+        }
+        return itemsList;
+    }
 
     public interface GetAllItemsListener{
         void onComplete(List<Item> data);
     }
-    public void getAllItems(GetAllItemsListener callback) {
+    public void refreshAllItems() {
+        EventItemsListLoadingState.setValue(LoadingStatus.LOADING);
 
         long localLastUpdate = Item.getLocalLastUpdate();
 
@@ -76,12 +91,7 @@ public class Model {
                     }
                 }
                 Item.setLocalLastUpdate(time);
-
-                List<Item> complete = localDb.itemDao().getAll();
-
-                mainHandler.post(()->{
-                    callback.onComplete(complete);
-                });
+                EventItemsListLoadingState.postValue(LoadingStatus.NOT_LOADING);
             });
         });
 
@@ -91,21 +101,30 @@ public class Model {
         void onComplete();
     }
     public void addItem(Item item, AddItemListener callback) {
-        firebaseModel.addItem(item,callback);
+        firebaseModel.addItem(item,() -> {
+            refreshAllItems();
+            callback.onComplete();
+        });
     }
 
     public interface DeleteItemListener{
         void onComplete();
     }
     public void deleteItem(Item item, DeleteItemListener callback) {
-        firebaseModel.deleteItem(item,callback);
+        firebaseModel.deleteItem(item,() -> {
+            refreshAllItems();
+            callback.onComplete();
+        });
     }
 
     public interface EditItemListener{
         void onComplete();
     }
     public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EditItemListener callback) {
-       firebaseModel.editItem(itemId,itemName,itemDescription,itemAddress,imageUrl,callback);
+       firebaseModel.editItem(itemId,itemName,itemDescription,itemAddress,imageUrl,() -> {
+           refreshAllItems();
+           callback.onComplete();
+       });
     }
 
     public interface GetAllUsersListener{
