@@ -73,7 +73,11 @@
     <fragment
         android:id="@+id/newItemFragment"
         android:name="com.example.fragmenttest.NewItemFragment"
-        android:label="NewItemFragment" />
+        android:label="NewItemFragment" >
+        <action
+            android:id="@+id/action_newItemFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
     <action android:id="@+id/action_global_newItemFragment" app:destination="@id/newItemFragment" />
     <action android:id="@+id/action_global_personalInfoFragment2" app:destination="@id/personalInfoFragment" />
     <fragment

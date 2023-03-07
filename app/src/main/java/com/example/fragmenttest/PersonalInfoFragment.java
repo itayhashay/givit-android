@@ -69,7 +69,7 @@ public class PersonalInfoFragment extends Fragment {
         usernameEt = view.findViewById(R.id.user_username_pt);
         phoneEt = view.findViewById(R.id.user_phone_pt);
         submitBtn = view.findViewById(R.id.edit_user_btn);
-        imageIv =binding.avatarImageIv;
+        imageIv =view.findViewById(R.id.avatar_image_iv);
         logoutBtn = binding.logoutUserBtn;
 
         imageIv.setOnClickListener(v -> {
@@ -82,8 +82,8 @@ public class PersonalInfoFragment extends Fragment {
             lastNameEt.setText(viewModel.getUser().getLastName());
             usernameEt.setText(viewModel.getUser().getUsername());
             phoneEt.setText(viewModel.getUser().getPhone());
-            if(viewModel.getUser().getImageUrl()!=null)  {
-                Picasso.get().load(viewModel.getUser().getImageUrl()).placeholder(R.drawable.user).into(imageIv);
+            if(userFirebase.getImageUrl()!=null)  {
+                Picasso.get().load(userFirebase.getImageUrl()).placeholder(R.drawable.user).into(imageIv);
             }else {
                 imageIv.setImageResource(R.drawable.user);
             }
@@ -101,7 +101,7 @@ public class PersonalInfoFragment extends Fragment {
 
             if(isAvatarSelected) {
                 Model.getInstance().uploadImage("user/" + Model.getInstance().getCurrentUserUID(), bitmap, url -> {
-                    Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,imageUrl,() -> {
+                    Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,url,() -> {
                         Navigation.findNavController(view).popBackStack();
                     });
                 });

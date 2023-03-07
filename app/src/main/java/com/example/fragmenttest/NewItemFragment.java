@@ -95,6 +95,7 @@ public class NewItemFragment extends Fragment {
                     Model.getInstance().uploadImage("item/"+item.getId(),bitmap,url -> {
                         item.setImageUrl(url);
                         Model.getInstance().addItem(item, ()->{
+//                            Navigation.findNavController(view).navigate(NewItemFragmentDirections.actionNewItemFragmentToFeedFragment());
                             Navigation.findNavController(view).popBackStack();
                         });
                     });

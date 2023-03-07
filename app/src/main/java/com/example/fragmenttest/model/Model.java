@@ -181,7 +181,10 @@ public class Model {
         executor.execute(() -> {
             localDb.userDao().editUser(userId, username,userPhone,firstName, lastName,imageUrl);
         });
-        firebaseModel.editUser(userId, username, userPhone, firstName,lastName,imageUrl, callback);
+        firebaseModel.editUser(userId, username, userPhone, firstName,lastName,imageUrl, () -> {
+            refreshAllUsers();
+            callback.onComplete();
+        });
     }
 
     public interface GetUserByIdListener{

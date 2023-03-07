@@ -1,12 +1,15 @@
 package com.example.fragmenttest;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fragmenttest.model.Model;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainFragment extends Fragment {
     TextView titleTv;
@@ -41,7 +47,6 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         loginFrag = LoginFragment.newInstance();
@@ -55,13 +60,11 @@ public class MainFragment extends Fragment {
         TextView signupTv = view.findViewById(R.id.main_signup_tv);
         signupTv.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.signupFragment));
 
-//        Button userBtn = view.findViewById(R.id.main_user_btn);
-
-//        userBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.user));
-//        userBtn.setOnClickListener((view1) -> {
-//            Navigation.findNavController(view).navigate(R.id.action_global_feedFragment);
-//        });
-
+        Model.getInstance().getUserById("1", user -> {
+            if(Model.getInstance().isSignedIn()) {
+                Navigation.findNavController(getView()).navigate(MainFragmentDirections.actionMainFragmentToFeedFragment());
+            }
+        });
 
         TextView titleTv = view.findViewById(R.id.personal_info_title_tv);
         if (title != null) {
@@ -70,7 +73,13 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-//    @Override
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+    }
+
+    //    @Override
 //    public void onResume() {
 //        super.onResume();
 //        ((MainActivity)getActivity()).getSupportActionBar().hide();
