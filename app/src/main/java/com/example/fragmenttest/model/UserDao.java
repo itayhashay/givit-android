@@ -1,5 +1,6 @@
 package com.example.fragmenttest.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,7 +12,7 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Query("select * from User")
-    List<User> getAll();
+    LiveData<List<User>> getAll();
 
     @Query("select * from User where id = :userId")
     User getUserById(String userId);
@@ -21,4 +22,8 @@ public interface UserDao {
 
     @Delete
     void delete(User user);
+
+    @Query("UPDATE User set username = :username, phone = :userPhone,firstName = :firstName, lastName = :lastName, imageUrl = :imageUrl WHERE id = :userId")
+    void editUser(String userId, String username, String userPhone, String firstName, String lastName, String imageUrl);
+
 }

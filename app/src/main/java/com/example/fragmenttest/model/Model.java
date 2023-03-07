@@ -67,6 +67,7 @@ public class Model {
     public LiveData<List<Item>> getAllItems(){
         if(itemsList == null) {
             itemsList = localDb.itemDao().getAll();
+            refreshAllUsers();
             refreshAllItems();
         }
         return itemsList;
@@ -133,11 +134,37 @@ public class Model {
        });
     }
 
+    LiveData<List<User>> usersList;
+    public LiveData<List<User>> getAllUsers(){
+        if(usersList == null) {
+            usersList = localDb.userDao().getAll();
+            refreshAllUsers();
+        }
+        return usersList;
+    }
+
     public interface GetAllUsersListener{
         void onComplete(List<User> data);
     }
-    public void getAllUsers(GetAllUsersListener callback) {
-        firebaseModel.getAllUsers(callback);
+    public void refreshAllUsers() {
+        EventItemsListLoadingState.setValue(LoadingStatus.LOADING);
+
+        long localLastUpdate = Item.getLocalLastUpdate();
+
+        firebaseModel.getAllUsersSince(localLastUpdate, list ->{
+            executor.execute(()->{
+                Log.d("TAG", "getAllItems: " + list.size());
+                long time = localLastUpdate;
+                for(User user: list) {
+                    localDb.userDao().insertAll(user);
+                    if(time< user.getLastUpdated()) {
+                        time = user.getLastUpdated();
+                    }
+                }
+                Item.setLocalLastUpdate(time);
+                EventItemsListLoadingState.postValue(LoadingStatus.NOT_LOADING);
+            });
+        });
     }
 
     public interface AddUserListener{
@@ -151,6 +178,9 @@ public class Model {
         void onComplete();
     }
     public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,EditUserListener callback) {
+        executor.execute(() -> {
+            localDb.userDao().editUser(userId, username,userPhone,firstName, lastName,imageUrl);
+        });
         firebaseModel.editUser(userId, username, userPhone, firstName,lastName,imageUrl, callback);
     }
 

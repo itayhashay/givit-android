@@ -113,8 +113,10 @@ public class FirebaseModel {
         }
 
 
-    public void getAllUsers(Model.GetAllUsersListener callback) {
-        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void getAllUsersSince(long since,Model.GetAllUsersListener callback) {
+        db.collection("users").whereGreaterThanOrEqualTo(Item.LAST_UPDATED, new Timestamp(since,0))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<User> users = new LinkedList<>();

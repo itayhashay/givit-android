@@ -1,8 +1,11 @@
 package com.example.fragmenttest;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +20,15 @@ import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
 import com.squareup.picasso.Picasso;
 
+import java.util.stream.Collectors;
+
 public class ItemDetailsFragment extends Fragment {
 
     Item item;
     String description;
     User user;
+
+    ItemDetailsFragmentViewModel viewModel;
 
     TextView nameTv;
     TextView usernameTv;
@@ -43,17 +50,36 @@ public class ItemDetailsFragment extends Fragment {
             item = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItem();
             Log.d("TAG", item.userId);
             nameTv.setText(item.getName());
-            usernameTv.setText(item.getUserId());
+            if(viewModel.getUsersList().getValue() == null) {
+                user = new User("", "", "", "" , "","", "");
+            }else {
+                user = viewModel.getUsersList().getValue().stream().filter(user1 -> {
+                    return user1.id.equals(item.userId);
+                }).collect(Collectors.toList()).get(0);
+            }
+            usernameTv.setText(user.username);
             if(item.getImageUrl() != null) {
                 Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(imageIv);
             }else {
                 imageIv.setImageResource(R.drawable.item);
             }
-            Model.getInstance().getUserById(item.userId, user1 -> {
-                user=user1;
-                usernameTv.setText(user.username);
-            });
         }
+
+
+        viewModel.getUsersList().observe(getViewLifecycleOwner(),users -> {
+            User user = users.stream().filter(user1 -> user1.id.equals(item.userId)).collect(Collectors.toList()).get(0);
+            usernameTv.setText(user.username);
+        });
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(ItemDetailsFragmentViewModel.class);
+    }
+
+    void reloadData() {
+        Model.getInstance().refreshAllUsers();
     }
 }
