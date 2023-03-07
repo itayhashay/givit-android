@@ -11,9 +11,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import com.example.fragmenttest.databinding.FragmentNewItemBinding;
 import com.example.fragmenttest.databinding.FragmentPersonalInfoBinding;
 import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
+import com.example.fragmenttest.model.retrofit.Joke;
+import com.example.fragmenttest.model.retrofit.JokeModel;
 import com.squareup.picasso.Picasso;
 
 public class PersonalInfoFragment extends Fragment {
@@ -109,6 +113,14 @@ public class PersonalInfoFragment extends Fragment {
                 Model.getInstance().editUser(Model.getInstance().getCurrentUserUID(), username, phone, firstName,lastName,imageUrl,() -> {
                     Navigation.findNavController(view).popBackStack();
                 });
+            }
+        });
+
+        LiveData<Joke> joke = JokeModel.instance.getRandomJoke();
+        joke.observe(getViewLifecycleOwner(),j -> {
+            if(joke != null) {
+                Log.d("TAG", "onCreateView: " + j.getSetup());
+                Log.d("TAG", "onCreateView: " + j.getPunchline());
             }
         });
 
