@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTopBarColor("#FFCE00");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         NavHostFragment navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();

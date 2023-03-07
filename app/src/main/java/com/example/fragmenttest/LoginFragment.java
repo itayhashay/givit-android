@@ -3,6 +3,7 @@ package com.example.fragmenttest;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -31,16 +32,19 @@ public class LoginFragment extends Fragment {
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
+
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        ((MainActivity)getActivity()).getSupportActionBar().hide();
         title = LoginFragmentArgs.fromBundle(getArguments()).getAppTitle();
         submitBtn = view.findViewById(R.id.login_submit_btn);
         signupBtn = view.findViewById(R.id.login_signup_btn);
@@ -74,14 +78,14 @@ public class LoginFragment extends Fragment {
         menu.clear();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        ((MainActivity)getActivity()).getSupportActionBar().hide();
-//    }
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        ((MainActivity)getActivity()).getSupportActionBar().show();
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((MainActivity)getActivity()).getSupportActionBar().show();
+    }
 }

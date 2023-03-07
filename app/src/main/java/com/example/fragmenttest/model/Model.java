@@ -171,7 +171,13 @@ public class Model {
         void onComplete();
     }
     public void addUser(User user, AddUserListener callback) {
-        firebaseModel.addUser(user, callback);
+        executor.execute(() -> {
+            localDb.userDao().insertAll(user);
+        });
+        firebaseModel.addUser(user, () -> {
+            refreshAllUsers();
+            callback.onComplete();
+        });
     }
 
     public interface EditUserListener{
