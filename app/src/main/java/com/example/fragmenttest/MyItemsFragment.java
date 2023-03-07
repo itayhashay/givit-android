@@ -58,14 +58,25 @@ public class MyItemsFragment extends Fragment {
                 Navigation.findNavController(view).navigate(action);
             }
         });
+        binding.progressBar.setVisibility(View.GONE);
 
         viewModel.getData().observe(getViewLifecycleOwner(),items -> {
             if(items == null) {
                 items = new LinkedList<>();
             }
-            adapter.setItemList(items.stream().filter(item -> item.getUserId().equals(Model.getInstance()
-                    .getCurrentUserUID())).collect(Collectors.toList()));
-            binding.progressBar.setVisibility(View.GONE);
+            Log.d("TAG", "onCreateView: " + Model.getInstance().getCurrentUserUID());
+            adapter.setItemList(items.stream().filter(item -> {
+                    return item.getUserId().equals(Model.getInstance().getCurrentUserUID());}
+            ).collect(Collectors.toList()));
+
+        });
+
+        Model.getInstance().EventItemsListLoadingState.observe(getViewLifecycleOwner(), loadingStatus -> {
+            binding.swipeRefresh.setRefreshing(loadingStatus == Model.LoadingStatus.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            reloadData();
         });
 
         return view;
@@ -77,16 +88,7 @@ public class MyItemsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(MyItemsFragmentViewModel.class);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    void reloadData() {
         Model.getInstance().refreshAllItems();
-        binding.progressBar.setVisibility(View.VISIBLE);
-//        Model.getInstance().getAllItems((lst) -> {
-//            String userId = Model.getInstance().getCurrentUserUID();
-//            viewModel.setData(lst.stream().filter(item -> item.userId.equals(userId)).collect(Collectors.toList()));
-//            adapter.setItemList(viewModel.getData());
-//            binding.progressBar.setVisibility(View.GONE);
-//        });
     }
 }

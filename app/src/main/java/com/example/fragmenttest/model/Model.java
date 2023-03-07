@@ -111,6 +111,9 @@ public class Model {
         void onComplete();
     }
     public void deleteItem(Item item, DeleteItemListener callback) {
+        executor.execute(() -> {
+            localDb.itemDao().delete(item);
+        });
         firebaseModel.deleteItem(item,() -> {
             refreshAllItems();
             callback.onComplete();
@@ -121,6 +124,9 @@ public class Model {
         void onComplete();
     }
     public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EditItemListener callback) {
+        executor.execute(() -> {
+            localDb.itemDao().editItem(itemId, itemName,itemDescription,itemAddress, imageUrl);
+        });
        firebaseModel.editItem(itemId,itemName,itemDescription,itemAddress,imageUrl,() -> {
            refreshAllItems();
            callback.onComplete();

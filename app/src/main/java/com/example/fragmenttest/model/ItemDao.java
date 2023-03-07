@@ -18,8 +18,8 @@ public interface ItemDao {
     @Query("select * from Item where id = :itemId")
     Item getItemById(String itemId);
 
-    @Query("UPDATE Item set name = :itemName, description = :itemDescription, address = :itemAddress WHERE id = :itemId")
-    void editItem(String itemId, String itemName, String itemDescription, String itemAddress);
+    @Query("UPDATE Item set name = :itemName, description = :itemDescription, address = :itemAddress, imageUrl = :imageUrl WHERE id = :itemId")
+    void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl);
 
     @Query("select * from Item where userId = :userId")
     List<Item> getItemsByUserId(String userId);
