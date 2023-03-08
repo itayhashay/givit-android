@@ -114,14 +114,6 @@ public class PersonalInfoFragment extends Fragment {
             }
         });
 
-        LiveData<Joke> joke = JokeModel.instance.getRandomJoke();
-        joke.observe(getViewLifecycleOwner(),j -> {
-            if(joke != null) {
-                Log.d("TAG", "onCreateView: " + j.getSetup());
-                Log.d("TAG", "onCreateView: " + j.getPunchline());
-            }
-        });
-
         logoutBtn.setOnClickListener(v -> {
             Model.getInstance().signOut(() -> {
                 Navigation.findNavController(view).navigate(PersonalInfoFragmentDirections.actionPersonalInfoFragmentToMainFragment());

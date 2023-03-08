@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
+import com.example.fragmenttest.model.retrofit.Joke;
+import com.example.fragmenttest.model.retrofit.JokeModel;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -52,6 +55,9 @@ public class ItemDetailsFragment extends Fragment {
     String BUTTON_HIDE_TEXT = "HIDE PHONE NUMBER";
     String BUTTON_HIDE_COLOR = "#C32A1F";
 
+    TextView jokeSetupTv;
+    TextView jokePunchTv;
+
     ConstraintLayout userSectionCl;
 
     @Override
@@ -72,8 +78,12 @@ public class ItemDetailsFragment extends Fragment {
         userIv = view.findViewById(R.id.details_user_avatar_image_iv);
 
         hideShowBtn = view.findViewById(R.id.show_hide_user_btn);
+
         userSectionCl = view.findViewById(R.id.details_user_Cl);
         userSectionCl.setVisibility(View.INVISIBLE);
+
+        jokeSetupTv = view.findViewById(R.id.joke_setup_tv);
+        jokePunchTv = view.findViewById(R.id.joke_punch_tv);
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {
@@ -117,6 +127,14 @@ public class ItemDetailsFragment extends Fragment {
                 userSectionCl.setVisibility(View.VISIBLE);
                 hideShowBtn.setText(BUTTON_HIDE_TEXT);
                 hideShowBtn.setBackgroundColor(Color.parseColor(BUTTON_HIDE_COLOR));
+            }
+        });
+
+        LiveData<Joke> joke = JokeModel.instance.getRandomJoke();
+        joke.observe(getViewLifecycleOwner(),j -> {
+            if(joke != null) {
+                jokeSetupTv.setText(j.getSetup());
+                jokePunchTv.setText(j.getPunchline());
             }
         });
 
