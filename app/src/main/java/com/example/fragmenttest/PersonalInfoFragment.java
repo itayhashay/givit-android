@@ -23,10 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.fragmenttest.databinding.FragmentNewItemBinding;
 import com.example.fragmenttest.databinding.FragmentPersonalInfoBinding;
 import com.example.fragmenttest.model.Model;
-import com.example.fragmenttest.model.User;
 import com.example.fragmenttest.model.retrofit.Joke;
 import com.example.fragmenttest.model.retrofit.JokeModel;
 import com.squareup.picasso.Picasso;
@@ -55,7 +53,7 @@ public class PersonalInfoFragment extends Fragment {
             @Override
             public void onActivityResult(Bitmap result) {
                 if(result!=null) {
-                    binding.avatarImageIv.setImageBitmap(result);
+                    binding.personalAvatarImageIv.setImageBitmap(result);
                     isAvatarSelected =true;
                 }
             }
@@ -73,7 +71,7 @@ public class PersonalInfoFragment extends Fragment {
         usernameEt = view.findViewById(R.id.user_username_pt);
         phoneEt = view.findViewById(R.id.user_phone_pt);
         submitBtn = view.findViewById(R.id.edit_user_btn);
-        imageIv =view.findViewById(R.id.avatar_image_iv);
+        imageIv =view.findViewById(R.id.personal_avatar_image_iv);
         logoutBtn = binding.logoutUserBtn;
 
         imageIv.setOnClickListener(v -> {

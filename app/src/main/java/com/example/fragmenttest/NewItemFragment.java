@@ -53,7 +53,7 @@ public class NewItemFragment extends Fragment {
             @Override
             public void onActivityResult(Bitmap result) {
                 if(result!=null) {
-                    binding.avatarImageIv.setImageBitmap(result);
+                    binding.newItemImageIv.setImageBitmap(result);
                     isAvatarSelected =true;
                 }
             }
@@ -66,7 +66,7 @@ public class NewItemFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentNewItemBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        imageIv = binding.avatarImageIv;
+        imageIv = binding.newItemImageIv;
         sumbitBtn = view.findViewById(R.id.edit_user_btn);
         nameEt = view.findViewById(R.id.item_title_pt);
         descriptionEt = view.findViewById(R.id.edit_item_desc_pt);

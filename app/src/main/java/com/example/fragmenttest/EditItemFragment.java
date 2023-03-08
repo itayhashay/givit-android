@@ -52,7 +52,7 @@ public class EditItemFragment extends Fragment {
             @Override
             public void onActivityResult(Bitmap result) {
                 if(result!=null) {
-                    binding.avatarImageIv.setImageBitmap(result);
+                    binding.editAvatarImageIv.setImageBitmap(result);
                     isAvatarSelected =true;
                 }
             }
@@ -62,7 +62,7 @@ public class EditItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding= FragmentEditItemBinding.inflate(inflater, container, false);
+        binding = FragmentEditItemBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         namePt = view.findViewById(R.id.edit_item_name_pt);
         descriptionPt = view.findViewById(R.id.edit_item_desc_pt);
@@ -70,7 +70,7 @@ public class EditItemFragment extends Fragment {
 
         deleteBtn = view.findViewById(R.id.delete_item_btn);
         editBtn = view.findViewById(R.id.edit_user_btn);
-        imageIv = view.findViewById(R.id.avatar_image_iv);
+        imageIv = view.findViewById(R.id.edit_avatar_image_iv);
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {

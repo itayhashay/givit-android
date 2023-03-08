@@ -1,38 +1,58 @@
 package com.example.fragmenttest;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fragmenttest.databinding.FragmentItemCardBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.stream.Collectors;
 
 public class ItemDetailsFragment extends Fragment {
 
     Item item;
-    String description;
     User user;
 
     ItemDetailsFragmentViewModel viewModel;
 
-    TextView nameTv;
-    TextView usernameTv;
-    ImageView imageIv;
+    TextView titleTv;
+    TextView descTv;
+    TextView addressTv;
+    ImageView itemIv;
+
+    TextView firstNameTv;
+    TextView lastNameTv;
+    TextView phoneNumberTv;
+    ImageView userIv;
+
+    Button hideShowBtn;
+    String BUTTON_SHOW_TEXT = "SHOW PHONE NUMBER";
+    String BUTTON_SHOW_COLOR = "#4CAF50";
+    String BUTTON_HIDE_TEXT = "HIDE PHONE NUMBER";
+    String BUTTON_HIDE_COLOR = "#C32A1F";
+
+    ConstraintLayout userSectionCl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,35 +61,65 @@ public class ItemDetailsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
 
-        nameTv = view.findViewById(R.id.item_name_value);
-        usernameTv = view.findViewById(R.id.item_username_value);
-        imageIv = view.findViewById(R.id.item_imgae_iv);
+        titleTv = view.findViewById(R.id.item_details_title_tv);
+        descTv = view.findViewById(R.id.item_details_desc_tv);
+        addressTv = view.findViewById(R.id.item_details_address_value_tv);
+        itemIv = view.findViewById(R.id.item_details_image_iv);
+
+        firstNameTv = view.findViewById(R.id.user_first_name_tv);
+        lastNameTv = view.findViewById(R.id.user_last_name_tv);
+        phoneNumberTv = view.findViewById(R.id.user_phone_number_tv);
+        userIv = view.findViewById(R.id.details_user_avatar_image_iv);
+
+        hideShowBtn = view.findViewById(R.id.show_hide_user_btn);
+        userSectionCl = view.findViewById(R.id.details_user_Cl);
+        userSectionCl.setVisibility(View.INVISIBLE);
 
         // Get the arguments passed to this fragment
         if (getArguments() != null) {
             item = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItem();
             Log.d("TAG", item.userId);
-            nameTv.setText(item.getName());
-            if(viewModel.getUsersList().getValue() == null) {
-                user = new User("", "", "", "" , "","", "");
-            }else {
-                user = viewModel.getUsersList().getValue().stream().filter(user1 -> {
-                    return user1.id.equals(item.userId);
-                }).collect(Collectors.toList()).get(0);
-            }
-            usernameTv.setText(user.username);
+            titleTv.setText(item.getName());
+            descTv.setText(item.getDescription());
+            addressTv.setText(item.getAddress());
+
+//            if(viewModel.getUsersList().getValue() == null) {
+//                user = new User("", "", "", "" , "","", "");
+//            }else {
+//                user = viewModel.getUsersList().getValue().stream().filter(user1 -> {
+//                    return user1.id.equals(item.userId);
+//                }).collect(Collectors.toList()).get(0);
+//            }
+//            firstNameTv.setText(user.getFirstName());
+//            lastNameTv.setText(user.getLastName());
+
             if(item.getImageUrl() != null) {
-                Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(imageIv);
+                Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(itemIv);
             }else {
-                imageIv.setImageResource(R.drawable.item);
+                itemIv.setImageResource(R.drawable.item);
             }
         }
 
 
         viewModel.getUsersList().observe(getViewLifecycleOwner(),users -> {
             User user = users.stream().filter(user1 -> user1.id.equals(item.userId)).collect(Collectors.toList()).get(0);
-            usernameTv.setText(user.username);
+            firstNameTv.setText(user.getFirstName());
+            lastNameTv.setText(user.getLastName());
+            phoneNumberTv.setText(user.getPhone());
         });
+
+        hideShowBtn.setOnClickListener(v -> {
+            if (userSectionCl.getVisibility() == View.VISIBLE) {
+                userSectionCl.setVisibility(View.INVISIBLE);
+                hideShowBtn.setText(BUTTON_SHOW_TEXT);
+                hideShowBtn.setBackgroundColor(Color.parseColor(BUTTON_SHOW_COLOR));
+            } else {
+                userSectionCl.setVisibility(View.VISIBLE);
+                hideShowBtn.setText(BUTTON_HIDE_TEXT);
+                hideShowBtn.setBackgroundColor(Color.parseColor(BUTTON_HIDE_COLOR));
+            }
+        });
+
         return view;
     }
 
