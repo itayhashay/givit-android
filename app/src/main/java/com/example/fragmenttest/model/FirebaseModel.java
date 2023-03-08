@@ -188,6 +188,11 @@ public class FirebaseModel {
                     Log.d("TAG", "get failed with ", task.getException());
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG", "onFailure: " + e.getMessage());
+            }
         });
     }
 

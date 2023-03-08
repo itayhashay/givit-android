@@ -64,7 +64,6 @@ public class MyItemsFragment extends Fragment {
             if(items == null) {
                 items = new LinkedList<>();
             }
-            Log.d("TAG", "onCreateView: " + Model.getInstance().getCurrentUserUID());
             adapter.setItemList(items.stream().filter(item -> {
                     return item.getUserId().equals(Model.getInstance().getCurrentUserUID());}
             ).collect(Collectors.toList()));

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fragmenttest.databinding.FragmentItemDetailsBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 import com.example.fragmenttest.model.User;
@@ -30,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemDetailsFragment extends Fragment {
@@ -38,6 +41,7 @@ public class ItemDetailsFragment extends Fragment {
     User user;
 
     ItemDetailsFragmentViewModel viewModel;
+
 
     TextView titleTv;
     TextView descTv;
@@ -48,6 +52,8 @@ public class ItemDetailsFragment extends Fragment {
     TextView lastNameTv;
     TextView phoneNumberTv;
     ImageView userIv;
+
+    SwipeRefreshLayout swipeRefresh;
 
     Button hideShowBtn;
     String BUTTON_SHOW_TEXT = "SHOW PHONE NUMBER";
@@ -72,6 +78,8 @@ public class ItemDetailsFragment extends Fragment {
         addressTv = view.findViewById(R.id.item_details_address_value_tv);
         itemIv = view.findViewById(R.id.item_details_image_iv);
 
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+
         firstNameTv = view.findViewById(R.id.user_first_name_tv);
         lastNameTv = view.findViewById(R.id.user_last_name_tv);
         phoneNumberTv = view.findViewById(R.id.user_phone_number_tv);
@@ -92,17 +100,6 @@ public class ItemDetailsFragment extends Fragment {
             titleTv.setText(item.getName());
             descTv.setText(item.getDescription());
             addressTv.setText(item.getAddress());
-
-//            if(viewModel.getUsersList().getValue() == null) {
-//                user = new User("", "", "", "" , "","", "");
-//            }else {
-//                user = viewModel.getUsersList().getValue().stream().filter(user1 -> {
-//                    return user1.id.equals(item.userId);
-//                }).collect(Collectors.toList()).get(0);
-//            }
-//            firstNameTv.setText(user.getFirstName());
-//            lastNameTv.setText(user.getLastName());
-
             if(item.getImageUrl() != null) {
                 Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(itemIv);
             }else {
@@ -110,12 +107,34 @@ public class ItemDetailsFragment extends Fragment {
             }
         }
 
+        viewModel.getItemsList().observe(getViewLifecycleOwner(),items -> {
+            List<Item> itemsLst = items.stream().filter(item1 -> item1.id.equals(item.id)).collect(Collectors.toList());
+            if(itemsLst.size() == 0){
+                Navigation.findNavController(view).popBackStack();
+            } else {
+                item = itemsLst.get(0);
+                titleTv.setText(item.getName());
+                descTv.setText(item.getDescription());
+                addressTv.setText(item.getAddress());
+            }
+            if(item.getImageUrl() != null) {
+                Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.item).into(itemIv);
+            }else {
+                itemIv.setImageResource(R.drawable.item);
+            }
+        });
+
 
         viewModel.getUsersList().observe(getViewLifecycleOwner(),users -> {
             User user = users.stream().filter(user1 -> user1.id.equals(item.userId)).collect(Collectors.toList()).get(0);
             firstNameTv.setText(user.getFirstName());
             lastNameTv.setText(user.getLastName());
             phoneNumberTv.setText(user.getPhone());
+            if(user.getImageUrl() != null) {
+                Picasso.get().load(user.getImageUrl()).placeholder(R.drawable.user).into(userIv);
+            }else {
+                itemIv.setImageResource(R.drawable.item);
+            }
         });
 
         hideShowBtn.setOnClickListener(v -> {
@@ -138,6 +157,14 @@ public class ItemDetailsFragment extends Fragment {
             }
         });
 
+        Model.getInstance().EventItemsListLoadingState.observe(getViewLifecycleOwner(), loadingStatus -> {
+            swipeRefresh.setRefreshing(loadingStatus == Model.LoadingStatus.LOADING);
+        });
+
+        swipeRefresh.setOnRefreshListener(() -> {
+            reloadData();
+        });
+
         return view;
     }
 
@@ -149,5 +176,6 @@ public class ItemDetailsFragment extends Fragment {
 
     void reloadData() {
         Model.getInstance().refreshAllUsers();
+        Model.getInstance().refreshAllItems();
     }
 }
