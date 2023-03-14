@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.signup;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fragmenttest.R;
+import com.example.fragmenttest.main.MainActivity;
 import com.example.fragmenttest.databinding.FragmentNewItemBinding;
 import com.example.fragmenttest.databinding.FragmentSignupBinding;
 import com.example.fragmenttest.model.Model;
@@ -40,8 +42,6 @@ public class SignupFragment extends Fragment {
     EditText emailEt;
     Button submitBtn;
     ImageView imageIv;
-    User user;
-    String Password;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +104,6 @@ public class SignupFragment extends Fragment {
                             Toast.makeText(view.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    Navigation.findNavController(view).navigate(SignupFragmentDirections.actionGlobalFeedFragment());
                 }
             }
         });

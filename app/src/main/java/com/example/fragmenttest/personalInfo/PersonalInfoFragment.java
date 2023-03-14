@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.personalInfo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,11 +11,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +21,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.fragmenttest.R;
 import com.example.fragmenttest.databinding.FragmentPersonalInfoBinding;
 import com.example.fragmenttest.model.Model;
-import com.example.fragmenttest.model.retrofit.Joke;
-import com.example.fragmenttest.model.retrofit.JokeModel;
 import com.squareup.picasso.Picasso;
 
 public class PersonalInfoFragment extends Fragment {
@@ -85,7 +82,8 @@ public class PersonalInfoFragment extends Fragment {
             usernameEt.setText(viewModel.getUser().getUsername());
             phoneEt.setText(viewModel.getUser().getPhone());
             if(userFirebase.getImageUrl()!=null)  {
-                Picasso.get().load(userFirebase.getImageUrl()).placeholder(R.drawable.user).into(imageIv);
+                imageUrl = userFirebase.getImageUrl();
+                Picasso.get().load(imageUrl).placeholder(R.drawable.user).into(imageIv);
             }else {
                 imageIv.setImageResource(R.drawable.user);
             }
@@ -96,7 +94,6 @@ public class PersonalInfoFragment extends Fragment {
             String lastName = lastNameEt.getText().toString();
             String username = usernameEt.getText().toString();
             String phone = phoneEt.getText().toString();
-
             imageIv.setDrawingCacheEnabled(true);
             imageIv.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) imageIv.getDrawable()).getBitmap();

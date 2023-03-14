@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.editItem;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -23,10 +22,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.fragmenttest.itemDetails.ItemDetailsFragmentArgs;
+import com.example.fragmenttest.R;
 import com.example.fragmenttest.databinding.FragmentEditItemBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
-import com.example.fragmenttest.model.User;
 import com.squareup.picasso.Picasso;
 
 public class EditItemFragment extends Fragment {
@@ -41,7 +41,6 @@ public class EditItemFragment extends Fragment {
     EditText descriptionPt;
     EditText addressPt;
     ImageView imageIv;
-
     Button deleteBtn;
     Button editBtn;
 
@@ -67,12 +66,10 @@ public class EditItemFragment extends Fragment {
         namePt = view.findViewById(R.id.edit_item_name_pt);
         descriptionPt = view.findViewById(R.id.edit_item_desc_pt);
         addressPt = view.findViewById(R.id.edit_item_address_pt);
-
         deleteBtn = view.findViewById(R.id.delete_item_btn);
         editBtn = view.findViewById(R.id.edit_user_btn);
         imageIv = view.findViewById(R.id.edit_avatar_image_iv);
 
-        // Get the arguments passed to this fragment
         if (getArguments() != null) {
             viewModel.setItem(ItemDetailsFragmentArgs.fromBundle(getArguments()).getItem());
             Log.d("TAG", viewModel.getItem().userId);
@@ -110,7 +107,6 @@ public class EditItemFragment extends Fragment {
                         Navigation.findNavController(view).popBackStack();
                     });
                 }
-
             }
         });
 

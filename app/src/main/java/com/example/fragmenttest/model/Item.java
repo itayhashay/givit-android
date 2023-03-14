@@ -32,7 +32,7 @@ public class Item implements Serializable {
     public long lastUpdated;
     public Boolean isDeleted = false;
 
-    final static String LAST_UPDATED = "lastUpdated";
+    public final static String LAST_UPDATED = "lastUpdated";
 
     public Item(String name, String description, String address, String userId, String imageUrl) {
         this.id = UUID.randomUUID().toString();

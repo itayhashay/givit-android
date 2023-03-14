@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.itemDetails;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;

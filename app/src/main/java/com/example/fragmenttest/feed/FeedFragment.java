@@ -1,11 +1,9 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.feed;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -17,12 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.fragmenttest.recycleAdapter.ItemRecyclerAdapter;
 import com.example.fragmenttest.databinding.FragmentFeedBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class FeedFragment extends Fragment {
 
@@ -38,8 +34,6 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_feed, container, false);
         binding = FragmentFeedBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         RecyclerView itemsList = binding.itemListFeed;

@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,18 +8,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.fragmenttest.login.LoginFragment;
+import com.example.fragmenttest.R;
 import com.example.fragmenttest.model.Model;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class MainFragment extends Fragment {
     TextView titleTv;
@@ -48,10 +45,9 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
         loginFrag = LoginFragment.newInstance();
-
         Button loginBtn = view.findViewById(R.id.main_login_btn);
+
         MainFragmentDirections.ActionMainFragmentToLoginFragment action = MainFragmentDirections.actionMainFragmentToLoginFragment("GIVIT");
         loginBtn.setOnClickListener((view1) -> {
             Navigation.findNavController(view).navigate(action);

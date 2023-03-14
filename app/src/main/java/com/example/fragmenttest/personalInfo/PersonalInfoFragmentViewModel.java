@@ -1,11 +1,10 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.personalInfo;
 
 import androidx.lifecycle.ViewModel;
 
 import com.example.fragmenttest.model.User;
 
 public class PersonalInfoFragmentViewModel extends ViewModel {
-
     User user;
 
     public User getUser() {

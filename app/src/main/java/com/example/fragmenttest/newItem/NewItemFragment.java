@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.newItem;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fragmenttest.R;
 import com.example.fragmenttest.databinding.FragmentEditItemBinding;
 import com.example.fragmenttest.databinding.FragmentNewItemBinding;
 import com.example.fragmenttest.model.Item;
@@ -35,16 +36,10 @@ public class NewItemFragment extends Fragment {
     EditText descriptionEt;
     EditText addressEt;
     Button sumbitBtn;
-    Button cameraBtn;
     ImageView imageIv;
-//    EditText lastNameEt;
-//    User user;
-//    String Password;
-    String id;
     String name;
     String description;
     String address;
-    String userId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,13 +66,10 @@ public class NewItemFragment extends Fragment {
         nameEt = view.findViewById(R.id.item_title_pt);
         descriptionEt = view.findViewById(R.id.edit_item_desc_pt);
         addressEt = view.findViewById(R.id.edit_item_address_pt);
-//        cameraBtn = view.findViewById(R.id.newitem_add_photo_btn);
 
         imageIv.setOnClickListener(v -> {
             cameraLauncher.launch(null);
         });
-
-
 
         sumbitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +87,6 @@ public class NewItemFragment extends Fragment {
                     Model.getInstance().uploadImage("item/"+item.getId(),bitmap,url -> {
                         item.setImageUrl(url);
                         Model.getInstance().addItem(item, ()->{
-//                            Navigation.findNavController(view).navigate(NewItemFragmentDirections.actionNewItemFragmentToFeedFragment());
                             Navigation.findNavController(view).popBackStack();
                         });
                     });

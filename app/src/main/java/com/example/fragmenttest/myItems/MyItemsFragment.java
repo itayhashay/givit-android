@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.myItems;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,14 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.fragmenttest.databinding.FragmentFeedBinding;
-import com.example.fragmenttest.databinding.FragmentItemCardBinding;
+import com.example.fragmenttest.recycleAdapter.ItemRecyclerAdapter;
 import com.example.fragmenttest.databinding.FragmentMyItemsBinding;
 import com.example.fragmenttest.model.Item;
 import com.example.fragmenttest.model.Model;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class MyItemsFragment extends Fragment {
@@ -34,7 +32,6 @@ public class MyItemsFragment extends Fragment {
     public static MyItemsFragment newInstance(){
         return new MyItemsFragment();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,8 +49,7 @@ public class MyItemsFragment extends Fragment {
         adapter.setOnItemClickListener(new ItemRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Item clickedItem = viewModel.getData().getValue().get(position);
-                Log.d("TAG", clickedItem.name + " clicked");
+                Item clickedItem = viewModel.getData().getValue().stream().filter(item -> item.getUserId().equals(Model.getInstance().getCurrentUserUID())).collect(Collectors.toList()).get(position);
                 MyItemsFragmentDirections.ActionMyItemsFragmentToEditItemFragment action = MyItemsFragmentDirections.actionMyItemsFragmentToEditItemFragment(clickedItem);
                 Navigation.findNavController(view).navigate(action);
             }
@@ -67,7 +63,6 @@ public class MyItemsFragment extends Fragment {
             adapter.setItemList(items.stream().filter(item -> {
                     return item.getUserId().equals(Model.getInstance().getCurrentUserUID());}
             ).collect(Collectors.toList()));
-
         });
 
         Model.getInstance().EventItemsListLoadingState.observe(getViewLifecycleOwner(), loadingStatus -> {

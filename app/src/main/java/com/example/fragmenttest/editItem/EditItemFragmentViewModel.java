@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.editItem;
 
 import androidx.lifecycle.ViewModel;
 

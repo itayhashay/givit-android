@@ -1,4 +1,4 @@
-package com.example.fragmenttest.model;
+package com.example.fragmenttest.model.firebase;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -6,6 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.fragmenttest.model.Item;
+import com.example.fragmenttest.model.Model;
+import com.example.fragmenttest.model.User;
+import com.example.fragmenttest.model.interfaces.EmptyOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.ImageOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.ItemsOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.UserOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.UsersOnCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +38,7 @@ import java.util.Map;
 public class FirebaseModel {
     FirebaseFirestore db;
     FirebaseStorage storage;
-    FirebaseModel() {
+    public FirebaseModel() {
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new
@@ -40,7 +48,7 @@ public class FirebaseModel {
         db.setFirestoreSettings(settings);
     }
 
-    public void getAllItemsSince(long since, Model.GetAllItemsListener callback) {
+    public void getAllItemsSince(long since, ItemsOnCompleteListener callback) {
         db.collection("items")
                 .whereGreaterThanOrEqualTo(Item.LAST_UPDATED, new Timestamp(since,0))
                 .get()
@@ -49,7 +57,6 @@ public class FirebaseModel {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<Item> items = new LinkedList<>();
                 if(task.isSuccessful()){
-//                    items.addAll(tesk)
                     QuerySnapshot jsonList = task.getResult();
                     for(DocumentSnapshot json: jsonList) {
                         items.add(Item.fromJson(json.getData()));
@@ -61,7 +68,7 @@ public class FirebaseModel {
         });
     }
 
-    public void addItem(Item item, Model.AddItemListener callback) {
+    public void addItem(Item item, EmptyOnCompleteListener callback) {
         db.collection("items").document(item.getId()).set(item.toJson()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -72,9 +79,10 @@ public class FirebaseModel {
 
     }
 
-    public void deleteItem(Item item, Model.DeleteItemListener callback) {
+    public void deleteItem(Item item, EmptyOnCompleteListener callback) {
 
         DocumentReference docRef = db.collection("items").document(item.getId());
+        item.setDeleted(true);
 
         docRef.update(item.toJson()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -91,7 +99,7 @@ public class FirebaseModel {
                 });
     }
 
-    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,Model.EditItemListener callback) {
+    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EmptyOnCompleteListener callback) {
         DocumentReference docRef = db.collection("items").document(itemId);
         Map<String,Object> updates = new HashMap<>();
         updates.put("name", itemName);
@@ -115,7 +123,7 @@ public class FirebaseModel {
         }
 
 
-    public void getAllUsersSince(long since,Model.GetAllUsersListener callback) {
+    public void getAllUsersSince(long since, UsersOnCompleteListener callback) {
         db.collection("users").whereGreaterThanOrEqualTo(Item.LAST_UPDATED, new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -134,7 +142,7 @@ public class FirebaseModel {
         });
     }
 
-    public void addUser(User user, Model.AddUserListener callback) {
+    public void addUser(User user, EmptyOnCompleteListener callback) {
         db.collection("users").document(user.getId()).set(user.toJson()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -145,7 +153,7 @@ public class FirebaseModel {
 
     }
 
-    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,Model.EditUserListener callback) {
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,EmptyOnCompleteListener callback) {
         DocumentReference docRef = db.collection("users").document(userId);
         Map<String,Object> updates = new HashMap<>();
         updates.put("username", username);
@@ -170,7 +178,7 @@ public class FirebaseModel {
                 });
     }
 
-    public void getUserById(String userId,Model.GetUserByIdListener callback) {
+    public void getUserById(String userId, UserOnCompleteListener callback) {
         DocumentReference docRef = db.collection("users").document(userId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -196,7 +204,7 @@ public class FirebaseModel {
         });
     }
 
-    void uploadImage(String fileName, Bitmap bitmap, Model.UploadImageListener callback) {
+    public void uploadImage(String fileName, Bitmap bitmap, ImageOnCompleteListener callback) {
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
         StorageReference imagesRef = storageRef.child("images/"+fileName+".jpg");

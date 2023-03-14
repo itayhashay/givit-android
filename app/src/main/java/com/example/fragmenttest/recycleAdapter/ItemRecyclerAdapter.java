@@ -1,4 +1,4 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.recycleAdapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.fragmenttest.R;
 import com.example.fragmenttest.model.Item;
 import com.squareup.picasso.Picasso;
 
@@ -18,6 +20,7 @@ class ItemViewHolder extends RecyclerView.ViewHolder {
     TextView descriptionTv;
     ImageView imageIv;
     List<Item> itemList;
+
     public ItemViewHolder(@NonNull View itemView, ItemRecyclerAdapter.OnItemClickListener listener, List<Item> itemList) {
         super(itemView);
         this.itemList = itemList;
@@ -68,7 +71,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         this.itemList = itemList;
     }
 
-    void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
     @NonNull

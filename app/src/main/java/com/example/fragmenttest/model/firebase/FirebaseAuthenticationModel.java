@@ -1,9 +1,12 @@
-package com.example.fragmenttest.model;
+package com.example.fragmenttest.model.firebase;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.fragmenttest.model.Model;
+import com.example.fragmenttest.model.interfaces.EmptyOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.FirebaseUserOnCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,7 +31,7 @@ public class FirebaseAuthenticationModel {
         return currentUser != null;
     }
 
-    public void signIn(String email, String password, Model.FirebaseUserOnCompleteListener callback) {
+    public void signIn(String email, String password, FirebaseUserOnCompleteListener callback) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -43,7 +46,7 @@ public class FirebaseAuthenticationModel {
                 });
     }
 
-    public void register(String email, String password, Model.FirebaseUserOnCompleteListener callback) {
+    public void register(String email, String password, FirebaseUserOnCompleteListener callback) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -62,12 +65,12 @@ public class FirebaseAuthenticationModel {
                 });
     }
 
-    public void signOut(Model.EmptyOnCompleteListener listener) {
+    public void signOut(EmptyOnCompleteListener listener) {
         firebaseAuth.signOut();
         listener.onComplete();
     }
 
-    private void onAuthenticationComplete(Task<AuthResult> task, Model.FirebaseUserOnCompleteListener listener) {
+    private void onAuthenticationComplete(Task<AuthResult> task, FirebaseUserOnCompleteListener listener) {
         FirebaseUser user;
         Exception ex = null;
         if (task.isSuccessful()) {

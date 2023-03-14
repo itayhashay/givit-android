@@ -1,9 +1,8 @@
-package com.example.fragmenttest;
+package com.example.fragmenttest.login;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -17,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fragmenttest.R;
+import com.example.fragmenttest.main.MainActivity;
 import com.example.fragmenttest.model.Model;
 
 public class LoginFragment extends Fragment {
@@ -26,13 +27,10 @@ public class LoginFragment extends Fragment {
     String password;
     String username;
 
-    public LoginFragment() {
-        // Required empty public constructor
-    }
+    public LoginFragment() {}
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
-
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -54,10 +52,8 @@ public class LoginFragment extends Fragment {
             if(username.equals("") || username.equals("User Name") || password.equals("") || password.equals("Password")) {
                 Toast.makeText(view.getContext(), "Please Don't Leave Empty Spaces", Toast.LENGTH_SHORT).show();
             }else {
-//                Navigation.findNavController(view).navigate(LoginFragmentDirections.actionGlobalFeedFragment());
                 Model.getInstance().signIn(username,password,(user,ex)-> {
                     if(user != null) {
-                        Log.d("TAG", "onCreateView: " + Model.getInstance().isSignedIn());
                         Navigation.findNavController(view).navigate(LoginFragmentDirections.actionGlobalFeedFragment());
                     }else {
                         Toast.makeText(view.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();

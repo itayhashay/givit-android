@@ -9,9 +9,15 @@ import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.fragmenttest.model.firebase.FirebaseAuthenticationModel;
+import com.example.fragmenttest.model.firebase.FirebaseModel;
+import com.example.fragmenttest.model.interfaces.EmptyOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.FirebaseUserOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.ImageOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.UserOnCompleteListener;
+import com.example.fragmenttest.model.interfaces.UsersOnCompleteListener;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -21,7 +27,6 @@ public class Model {
     static final Model _instance = new Model();
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     private Executor executor = Executors.newSingleThreadExecutor();
-    private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel  = new FirebaseModel();
     private FirebaseAuthenticationModel authentication = new FirebaseAuthenticationModel();
     public static Model getInstance() {
@@ -37,7 +42,6 @@ public class Model {
 
    final public MutableLiveData<LoadingStatus> EventItemsListLoadingState = new MutableLiveData<>();
 
-
     public String getCurrentUserUID() {
         return authentication.getCurrentUserUID();
     }
@@ -46,9 +50,6 @@ public class Model {
         return authentication.isUserSignedIn();
     }
 
-    public interface FirebaseUserOnCompleteListener {
-        void onComplete(FirebaseUser firebaseUser, Exception ex);
-    }
     public void signIn(String email, String password, FirebaseUserOnCompleteListener listener) {
         authentication.signIn(email, password, listener);
     }
@@ -57,9 +58,6 @@ public class Model {
         authentication.register(email, password, listener);
     }
 
-    public interface EmptyOnCompleteListener {
-        void onComplete();
-    }
     public void signOut(EmptyOnCompleteListener listener) {
         authentication.signOut(listener);
     }
@@ -74,9 +72,6 @@ public class Model {
         return itemsList;
     }
 
-    public interface GetAllItemsListener{
-        void onComplete(List<Item> data);
-    }
     public void refreshAllItems() {
         EventItemsListLoadingState.setValue(LoadingStatus.LOADING);
 
@@ -99,20 +94,14 @@ public class Model {
 
     }
 
-    public interface AddItemListener{
-        void onComplete();
-    }
-    public void addItem(Item item, AddItemListener callback) {
+    public void addItem(Item item, EmptyOnCompleteListener callback) {
         firebaseModel.addItem(item,() -> {
             refreshAllItems();
             callback.onComplete();
         });
     }
 
-    public interface DeleteItemListener{
-        void onComplete();
-    }
-    public void deleteItem(Item item, DeleteItemListener callback) {
+    public void deleteItem(Item item, EmptyOnCompleteListener callback) {
         executor.execute(() -> {
             item.setDeleted(true);
             localDb.itemDao().insertAll(item);
@@ -123,10 +112,7 @@ public class Model {
         });
     }
 
-    public interface EditItemListener{
-        void onComplete();
-    }
-    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EditItemListener callback) {
+    public void editItem(String itemId, String itemName, String itemDescription, String itemAddress, String imageUrl,EmptyOnCompleteListener callback) {
         executor.execute(() -> {
             localDb.itemDao().editItem(itemId, itemName,itemDescription,itemAddress, imageUrl);
         });
@@ -145,9 +131,6 @@ public class Model {
         return usersList;
     }
 
-    public interface GetAllUsersListener{
-        void onComplete(List<User> data);
-    }
     public void refreshAllUsers() {
         EventItemsListLoadingState.setValue(LoadingStatus.LOADING);
 
@@ -169,10 +152,7 @@ public class Model {
         });
     }
 
-    public interface AddUserListener{
-        void onComplete();
-    }
-    public void addUser(User user, AddUserListener callback) {
+    public void addUser(User user, EmptyOnCompleteListener callback) {
         executor.execute(() -> {
             localDb.userDao().insertAll(user);
         });
@@ -182,10 +162,7 @@ public class Model {
         });
     }
 
-    public interface EditUserListener{
-        void onComplete();
-    }
-    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,EditUserListener callback) {
+    public void editUser(String userId, String username, String userPhone, String firstName,String lastName, String imageUrl,EmptyOnCompleteListener callback) {
         executor.execute(() -> {
             localDb.userDao().editUser(userId, username,userPhone,firstName, lastName,imageUrl);
         });
@@ -195,17 +172,11 @@ public class Model {
         });
     }
 
-    public interface GetUserByIdListener{
-        void onComplete(User user);
-    }
-    public void getUserById(String userId, GetUserByIdListener callback) {
+    public void getUserById(String userId, UserOnCompleteListener callback) {
         firebaseModel.getUserById(userId, callback);
     }
 
-    public interface UploadImageListener{
-        void onComplete(String url);
-    }
-    public void uploadImage(String fileName, Bitmap bitmap, UploadImageListener callback) {
+    public void uploadImage(String fileName, Bitmap bitmap, ImageOnCompleteListener callback) {
         firebaseModel.uploadImage(fileName, bitmap, callback);
     }
 }
