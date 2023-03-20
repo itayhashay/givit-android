@@ -81,7 +81,7 @@ public class Model {
             executor.execute(()->{
                 Log.d("TAG", "getAllItems: " + list.size());
                 long time = localLastUpdate;
-                for(Item item:  list.stream().filter(item -> !item.isDeleted).collect(Collectors.toList())) {
+                for(Item item:  list) {
                     localDb.itemDao().insertAll(item);
                     if(time< item.getLastUpdated()) {
                         time = item.getLastUpdated();

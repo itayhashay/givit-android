@@ -77,6 +77,6 @@ public class FeedFragment extends Fragment {
 
     void reloadData() {
         Model.getInstance().refreshAllItems();
-//        binding.progressBar2.setVisibility(View.VISIBLE);
+        Model.getInstance().refreshAllUsers();
     }
 }
